@@ -34,10 +34,18 @@
 						<v-flex class="xs3">
 							<v-btn color="success" :disabled="selectedtype==''" @click="ajouterTypeFamilier()">Ajouter</v-btn> 
 						</v-flex>
+						<v-flex class="xs3 offset-xs2">
+							<v-switch
+    						label="Activer/Désactiver les sons"
+      						v-model="choixAudio"
+      						color="green darken-2"
+      						@change="sauvegardePreferences()"> <!-- Bouton Switch son -->
+      						</v-switch>
+						</v-flex>
 					</v-layout>
 					<v-layout class="row wrap"> <!-- Affichace des familiers avec leurs icônes -->
 						<v-flex 
-						v-ripple="{ class: 'lime--text' }" 
+						v-ripple="{ class: 'green--text' }" 
 						@click="nourrirTypeFamilier(familier.type)" 
 						style="cursor:pointer" 
 						class="xs2 elevation-5 mx-3 my-3 pl-2 pr-3 py-2 pb-4" 
@@ -92,7 +100,8 @@
 						{
 							nom: "Bworky", 
 							icone: "img\\bworky.png",
-							heureNourrissage: {debut: 5, fin: 72}
+							heureNourrissage: {debut: 5, fin: 72},
+							sound: new Audio("sound\\fennec.wav")
 						},
 						"corbac" :
 						{
@@ -131,7 +140,8 @@
 							heureNourrissage: {debut: 5, fin: 36}
 						}
 					},
-					selectedtype: ""
+					selectedtype: "",
+					choixAudio: true
 				}), 
 
 				methods: 
@@ -179,6 +189,13 @@
     						.format("HH:mm // D MMMM");
     					this.listeFamiliers = Array.from(this.listeFamiliers); // Sauvegarder la liste des familiers
     					localStorage.setItem('familiers', JSON.stringify(this.listeFamiliers)); // Je sauvegarde ce que j'ai fait au-dessus
+    					if (this.choixAudio==true) {
+    						this.typeFamilier[type].sound.play();
+    					}
+					},
+
+					sauvegardePreferences() {
+						localStorage.setItem('choixAudio', JSON.stringify(this.choixAudio));
 					}
 				}, 
 
@@ -199,6 +216,10 @@
 					}
 					else { 
 						this.listeFamiliers= familiers;
+					}
+					let choixAudio = JSON.parse(localStorage.getItem('choixAudio'));
+					if (choixAudio!=undefined) {
+						this.choixAudio=choixAudio;
 					}
 				}
 			});
