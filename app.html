@@ -36,16 +36,27 @@
 						</v-flex>
 					</v-layout>
 					<v-layout class="row wrap"> <!-- Affichace des familiers avec leurs icônes -->
-						<v-flex class="xs2 elevation-5 mx-3 my-3" v-for="familier in listeFamiliers">
-							{{afficherNomFamilier(familier.type)}} <br> 	<!-- retirer cette ligne pour enlever le nom du type de familier (il restera l'icône)-->
-							{{afficherMinimumProchainRepas(familier.type, familier.heureDernierRepas)}} <br>
-							{{afficherMaximumProchainRepas(familier.type, familier.heureDernierRepas)}}
-							<div v-ripple="{ class: 'lime--text' }" @click="nourrirTypeFamilier(familier.type)" style="cursor:pointer"> <!-- https://vuetifyjs.com/en/style/colors --> <!-- Effet surbrillance colorée quand je clique -->
-								<img :src="iconeFamilier(familier.type)" style="width:100%" />	<!-- icone du familier -->
-							</div>		
-							<v-btn flat icon color="red" @click="retirerTypeFamilier(familier.type)"> <!-- Bouton supprimé -->
-								 <v-icon>delete</v-icon>
-							</v-btn>		
+						<v-flex 
+						v-ripple="{ class: 'lime--text' }" 
+						@click="nourrirTypeFamilier(familier.type)" 
+						style="cursor:pointer" 
+						class="xs2 elevation-5 mx-3 my-3 pl-2 pr-3 py-2 pb-4" 
+						v-for="familier in listeFamiliers"> 
+						<!-- https://vuetifyjs.com/en/style/colors --> <!-- Effet surbrillance colorée quand je clique -->
+								<v-layout class="row wrap">
+									<v-flex class="xs9">
+										{{afficherMinimumProchainRepas(familier.type, familier.heureDernierRepas)}} <br>
+										{{afficherMaximumProchainRepas(familier.type, familier.heureDernierRepas)}}
+									</v-flex>
+									<v-flex class="xs3 ">
+										<v-btn flat icon color="red" @click="retirerTypeFamilier(familier.type)"> <!-- Bouton poubelle -->
+											<v-icon>delete</v-icon>
+										</v-btn>
+									</v-flex>	
+							</v-layout>	
+							<v-layout class="column align-center">
+										<img :src="iconeFamilier(familier.type)" style="width:110%; height:110%" />	<!-- icone du familier -->
+							</v-layout>		
 						</v-flex>
 					</v-layout>
 
