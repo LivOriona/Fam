@@ -15,10 +15,10 @@
 		<script type="text/javascript" src="https://unpkg.com/vuetify/dist/vuetify.min.js"></script>
 		<!-- Lien vers la librairie MomentJS -->
 		<script type="text/javascript" src="moment.js"></script>
-
+<!--  -->
 		<div id="app">
 			<v-app id="inspire">
-			<v-toolbar app>
+			<v-toolbar app> <!-- Barre de menu -->
 				<v-toolbar-title>Application de Nourrissage de Familiers</v-toolbar-title>
 				<v-spacer></v-spacer>
 				<img src="img/wabbit.png" style="height:50px"/>
@@ -27,7 +27,7 @@
 				<v-container>
 					Ici on va faire la page :3 <br>
 					Youpiiiii :D , c'est parti ! <br>
-					<v-layout class="row wrap"> <!-- Select ajout de familiers -->
+					<v-layout class="row wrap"> <!-- Barre pour ajouter des familiers -->
 						<v-flex class="xs4">
 							<v-select :items="listeTypesFamiliersDisponibles" v-model="selectedtype" label="Choisissez vos types de familiers" autocomplete></v-select>
 						</v-flex>
@@ -40,10 +40,10 @@
 							{{afficherNomFamilier(familier.type)}} <br> 	<!-- retirer cette ligne pour enlever le nom du type de familier (il restera l'icône)-->
 							{{afficherMinimumProchainRepas(familier.type, familier.heureDernierRepas)}} <br>
 							{{afficherMaximumProchainRepas(familier.type, familier.heureDernierRepas)}}
-							<div v-ripple="{ class: 'lime--text' }" @click="nourrirTypeFamilier(familier.type)" style="cursor:pointer"> <!-- https://vuetifyjs.com/en/style/colors -->
-								<img :src="iconeFamilier(familier.type)" style="width:100%;" class="not-selectable"/>	
+							<div v-ripple="{ class: 'lime--text' }" @click="nourrirTypeFamilier(familier.type)" style="cursor:pointer"> <!-- https://vuetifyjs.com/en/style/colors --> <!-- Effet surbrillance colorée quand je clique -->
+								<img :src="iconeFamilier(familier.type)" style="width:100%" />	<!-- icone du familier -->
 							</div>		
-							<v-btn flat icon color="red" @click="retirerTypeFamilier(familier.type)">
+							<v-btn flat icon color="red" @click="retirerTypeFamilier(familier.type)"> <!-- Bouton supprimé -->
 								 <v-icon>delete</v-icon>
 							</v-btn>		
 						</v-flex>
@@ -54,20 +54,13 @@
 			</v-app>
 		</div>
 
-		<style>
-			.not-selectable {
-				-moz-user-select: none;
-				-webkit-user-select: none;
-				user-select: none;
-			}
 
-		</style>
 
 		<script type="text/javascript">
 			new Vue({
 
 				el: '#app',
-				data: () => 
+				data: () => // Objet où je stocke toutes mes infos (encyclopédie)
 				({
 					listeFamiliers: [],
 					typeFamilier: 
@@ -133,54 +126,57 @@
 				methods: 
 				{ 
 					ajouterTypeFamilier(){
-						this.listeFamiliers.push({type: this.selectedtype, heureDernierRepas: moment().locale("fr").format("HH:mm // D MMMM")});
-						console.log(this.listeFamiliers[0].heureDernierRepas);
-						localStorage.setItem('familiers', JSON.stringify(this.listeFamiliers));
-						this.selectedtype = ""; // retirer cette ligne pour faire plein de Wabbits :D !!
+						this.listeFamiliers.push({ // Ajouter à la fin de la liste un nouvel élément
+							type: this.selectedtype, 
+							heureDernierRepas: moment() // moment() me retourne l'heure actuelle
+							.locale("fr") // Tu me mets le format en français stp 
+							.format("HH:mm // D MMMM") // Format exacte que je demande. C'est la chaîne stockée dans heureDernierRepas
+						});
+						localStorage // sac où je stocke/sauvegarde des trucs / Je mets une chaîne dans le localStorage, avec une étiquette "familiers" ici pour la retrouver
+							.setItem('familiers', JSON.stringify(this.listeFamiliers)); // JSON.stringtify = je transforme mon Objet en une chaine de caractères (string)
+						this.selectedtype = ""; // retirer cette ligne pour faire plein de Wabbits :D !! ( ? :( )
 					},
 					retirerTypeFamilier(type){
-						this.listeFamiliers = this.listeFamiliers.filter((fam) => {return fam.type != type});
-						localStorage.setItem('familiers', JSON.stringify(this.listeFamiliers));
+						this.listeFamiliers = this.listeFamiliers.filter((fam) => {return fam.type != type}); // 
+						localStorage.setItem('familiers', JSON.stringify(this.listeFamiliers)); // Je sauvegarde ce que j'ai fait au-dessus
 					},
 
 					afficherNomFamilier(type){
-						return this.typeFamilier[type].nom;
+						return this.typeFamilier[type].nom; // Dans typeFamilier, tu me récupères le nom
 					},
 					iconeFamilier(type){
-						return this.typeFamilier[type].icone;
+						return this.typeFamilier[type].icone; // Dans typeFamilier, tu me récupères l'icone
 					},
 					afficherMinimumProchainRepas(type, heureDernierRepas) {
-						return moment(heureDernierRepas, "HH:mm // D MMMM")
-							.clone()
-							.add(this.typeFamilier[type].heureNourrissage.debut, 'hours')
+						return moment(heureDernierRepas, "HH:mm // D MMMM") // Fabrication d'un objet qui représente l'heure du dernier repas
+							.add(this.typeFamilier[type].heureNourrissage.debut, 'hours') // Dans l'encyclopédie, je récupère l'heure de nourrissage minimale. Le .add rajoute une certaine durée à ma date, et je rajoute en heure l'heure minimum de repas
 							.locale("fr")
 							.format("HH:mm // D MMMM");
 					},
 					afficherMaximumProchainRepas(type, heureDernierRepas) {
 						return moment(heureDernierRepas, "HH:mm // D MMMM")
-							.clone()
 							.add(this.typeFamilier[type].heureNourrissage.fin, 'hours')
 							.locale("fr")
 							.format("HH:mm // D MMMM");
 					},
 					nourrirTypeFamilier(type) {
    						let index = this.listeFamiliers
-   							.map((fam)=>fam.type)
-   							.indexOf(type);
-    					this.listeFamiliers[index].heureDernierRepas = moment()
+   							.map((fam)=>fam.type) // je fais en sorte de ne conserver que la liste des TYPES de familiers
+   							.indexOf(type); // Je cherche la position du type que j'ai donné
+    					this.listeFamiliers[index].heureDernierRepas = moment() // Le type de familier qui a la position ci-dessus, je modifie son heure de dernier repas
     						.locale("fr")
     						.format("HH:mm // D MMMM");
-    					this.listeFamiliers = Array.from(this.listeFamiliers);
-    					localStorage.setItem('familiers', JSON.stringify(this.listeFamiliers));
+    					this.listeFamiliers = Array.from(this.listeFamiliers); // Sauvegarder la liste des familiers
+    					localStorage.setItem('familiers', JSON.stringify(this.listeFamiliers)); // Je sauvegarde ce que j'ai fait au-dessus
 					}
 				}, 
 
 				computed: {
 					listeTypesFamiliersDisponibles() {
-						let typesManages = this.listeFamiliers.map((familier) => {return familier.type});
-						return Object.entries(this.typeFamilier)
-							.map((entry) => {return {text: entry[1].nom, value: entry[0]}})
-							.filter((type) => {return typesManages.indexOf(type.value) == -1});
+						let typesManages = this.listeFamiliers.map((familier) => {return familier.type}); // Je récupère tous les types de familiers gérés actuelement (avec .map)
+						return Object.entries(this.typeFamilier) // Je récupère la liste des couples clef/valeur de l'encyclopédie
+							.map((entry) => {return {text: entry[1].nom, value: entry[0]}}) // Je transforme chaque entrée en un objet qui contient le nom du familier et le type de familier
+							.filter((type) => {return typesManages.indexOf(type.value) == -1}); // Filtre pour retirer les familiers déjà en cours de gestion
 					}
 				},
 
