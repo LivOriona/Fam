@@ -41,7 +41,7 @@
 							{{afficherMinimumProchainRepas(familier.type, familier.heureDernierRepas)}} <br>
 							{{afficherMaximumProchainRepas(familier.type, familier.heureDernierRepas)}}
 							<div v-ripple="{ class: 'lime--text' }" @click="nourrirTypeFamilier(familier.type)" style="cursor:pointer"> <!-- https://vuetifyjs.com/en/style/colors -->
-								<img :src="iconeFamilier(familier.type)" style="width:100%" />	
+								<img :src="iconeFamilier(familier.type)" style="width:100%;" class="not-selectable"/>	
 							</div>		
 							<v-btn flat icon color="red" @click="retirerTypeFamilier(familier.type)">
 								 <v-icon>delete</v-icon>
@@ -54,7 +54,14 @@
 			</v-app>
 		</div>
 
+		<style>
+			.not-selectable {
+				-moz-user-select: none;
+				-webkit-user-select: none;
+				user-select: none;
+			}
 
+		</style>
 
 		<script type="text/javascript">
 			new Vue({
