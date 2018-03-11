@@ -39,10 +39,12 @@
 						<v-flex 
 						v-ripple="{ class: 'lime--text' }" 
 						@click="nourrirTypeFamilier(familier.type)" 
-						style="cursor:pointer" 
-						class="xs2 elevation-5 mx-3 my-3 pl-2 pr-3 py-2 pb-4" 
+						style="cursor:pointer"
+						:id="familier.type"
+						class="xs2 elevation-5 mx-3 my-3 pl-2 pr-3 py-2 pb-4 pas-nourri" 
 						v-for="familier in listeFamiliers"> 
 						<!-- https://vuetifyjs.com/en/style/colors --> <!-- Effet surbrillance colorée quand je clique -->
+							<v-container fluid>
 								<v-layout class="row wrap">
 									<v-flex class="xs9">
 										{{afficherMinimumProchainRepas(familier.type, familier.heureDernierRepas)}} <br>
@@ -53,9 +55,10 @@
 											<v-icon>delete</v-icon>
 										</v-btn>
 									</v-flex>	
-							</v-layout>	
+								</v-layout>	
+							</v-container>
 							<v-layout class="column align-center">
-										<img :src="iconeFamilier(familier.type)" style="width:110%; height:110%" />	<!-- icone du familier -->
+										<img :src="iconeFamilier(familier.type)" style="width:110%; height:300px" />	<!-- icone du familier -->
 							</v-layout>		
 						</v-flex>
 					</v-layout>
@@ -65,7 +68,14 @@
 			</v-app>
 		</div>
 
-
+		<style>
+			.nourri {
+				background-color: green;
+			}
+			.pas-nourri {
+				transition-duration: 300s;
+			}
+		</style>
 
 		<script type="text/javascript">
 			new Vue({
@@ -171,14 +181,23 @@
 							.format("HH:mm // D MMMM");
 					},
 					nourrirTypeFamilier(type) {
-   						let index = this.listeFamiliers
-   							.map((fam)=>fam.type) // je fais en sorte de ne conserver que la liste des TYPES de familiers
-   							.indexOf(type); // Je cherche la position du type que j'ai donné
-    					this.listeFamiliers[index].heureDernierRepas = moment() // Le type de familier qui a la position ci-dessus, je modifie son heure de dernier repas
-    						.locale("fr")
-    						.format("HH:mm // D MMMM");
-    					this.listeFamiliers = Array.from(this.listeFamiliers); // Sauvegarder la liste des familiers
-    					localStorage.setItem('familiers', JSON.stringify(this.listeFamiliers)); // Je sauvegarde ce que j'ai fait au-dessus
+						let index = this.listeFamiliers
+							.map((fam)=>fam.type) // je fais en sorte de ne conserver que la liste des TYPES de familiers
+							.indexOf(type); // Je cherche la position du type que j'ai donné
+						this.listeFamiliers[index].heureDernierRepas = moment() // Le type de familier qui a la position ci-dessus, je modifie son heure de dernier repas
+							.locale("fr")
+							.format("HH:mm // D MMMM");
+						this.listeFamiliers = Array.from(this.listeFamiliers); // Sauvegarder la liste des familiers
+						localStorage.setItem('familiers', JSON.stringify(this.listeFamiliers)); // Je sauvegarde ce que j'ai fait au-dessus
+
+						let elem = document.querySelector('#'+type);
+						elem.classList.remove("pas-nourri");
+						elem.classList.add("nourri");
+						
+						setTimeout(function(){
+							elem.classList.add("pas-nourri");
+							elem.classList.remove("nourri");
+						}, 1);
 					}
 				}, 
 
