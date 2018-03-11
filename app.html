@@ -1,0 +1,193 @@
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<link rel="icon" href="img/wabbit.png"/>
+		<title>Application de Nourrissage de Familiers</title>
+		<!-- CSS pour icones + police d'écriture Roboto -->
+		<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons">
+		<!-- CSS pour les composants de Vuetify -->
+		<link rel="stylesheet" type="text/css" href="https://unpkg.com/vuetify/dist/vuetify.min.css">
+	</head>
+	<body>
+		<!-- Lien vers le framework VueJS -->
+		<script type="text/javascript" src="https://unpkg.com/vue/dist/vue.js"></script>
+		<!-- Lien vers la lib Vuetify -->
+		<script type="text/javascript" src="https://unpkg.com/vuetify/dist/vuetify.min.js"></script>
+		<!-- Lien vers la librairie MomentJS -->
+		<script type="text/javascript" src="moment.js"></script>
+
+		<div id="app">
+			<v-app id="inspire">
+			<v-toolbar app>
+				<v-toolbar-title>Application de Nourrissage de Familiers</v-toolbar-title>
+				<v-spacer></v-spacer>
+				<img src="img/wabbit.png" style="height:50px"/>
+			</v-toolbar>
+			<v-content>
+				<v-container>
+					Ici on va faire la page :3 <br>
+					Youpiiiii :D , c'est parti ! <br>
+					<v-layout class="row wrap"> <!-- Select ajout de familiers -->
+						<v-flex class="xs4">
+							<v-select :items="listeTypesFamiliersDisponibles" v-model="selectedtype" label="Choisissez vos types de familiers" autocomplete></v-select>
+						</v-flex>
+						<v-flex class="xs3">
+							<v-btn color="success" :disabled="selectedtype==''" @click="ajouterTypeFamilier()">Ajouter</v-btn> 
+						</v-flex>
+					</v-layout>
+					<v-layout class="row wrap"> <!-- Affichace des familiers avec leurs icônes -->
+						<v-flex class="xs2 elevation-5 mx-3 my-3" v-for="familier in listeFamiliers">
+							{{afficherNomFamilier(familier.type)}} <br> 	<!-- retirer cette ligne pour enlever le nom du type de familier (il restera l'icône)-->
+							{{afficherMinimumProchainRepas(familier.type, familier.heureDernierRepas)}} <br>
+							{{afficherMaximumProchainRepas(familier.type, familier.heureDernierRepas)}}
+							<div v-ripple="{ class: 'lime--text' }" @click="nourrirTypeFamilier(familier.type)" style="cursor:pointer"> <!-- https://vuetifyjs.com/en/style/colors -->
+								<img :src="iconeFamilier(familier.type)" style="width:100%" />	
+							</div>		
+							<v-btn flat icon color="red" @click="retirerTypeFamilier(familier.type)">
+								 <v-icon>delete</v-icon>
+							</v-btn>		
+						</v-flex>
+					</v-layout>
+
+				</v-container>
+			</v-content>
+			</v-app>
+		</div>
+
+
+
+		<script type="text/javascript">
+			new Vue({
+
+				el: '#app',
+				data: () => 
+				({
+					listeFamiliers: [],
+					typeFamilier: 
+					{
+						"wabbit" : 
+						{
+							nom: "Wabbit", 
+							icone: "img\\wabbit.png",
+							heureNourrissage: {debut: 23, fin: 48}
+						},
+						"chacha" :
+						{
+							nom: "Chacha", 
+							icone: "img\\chacha.png",
+							heureNourrissage: {debut: 5, fin: 18}
+						},
+						"bworky" :
+						{
+							nom: "Bworky", 
+							icone: "img\\bworky.png",
+							heureNourrissage: {debut: 5, fin: 72}
+						},
+						"corbac" :
+						{
+							nom: "Vilain Petit Corbac", 
+							icone: "img\\corbac.png",
+							heureNourrissage: {debut: 5, fin: 72}
+						},
+						"koalak_sanguin" :
+						{
+							nom: "Koalak Sanguin", 
+							icone: "img\\koalak_sanguin.png",
+							heureNourrissage: {debut: 5, fin: 72}
+						},
+						"peki" :
+						{
+							nom: "Péki", 
+							icone: "img\\peki.png",
+							heureNourrissage: {debut: 3, fin: 36}
+						},
+						"nomoon" :
+						{
+							nom: "Nomoon", 
+							icone: "img\\nomoon.png",
+							heureNourrissage: {debut: 24, fin: 72}
+						},
+						"petit_chienchien_noir" :
+						{
+							nom: "Petit Chienchien Noir", 
+							icone: "img\\petit_chienchien_noir.png",
+							heureNourrissage: {debut: 11, fin: 36}
+						},
+						"petit_chacha_blanc" :
+						{
+							nom: "Petit Chacha Blanc", 
+							icone: "img\\petit_chacha_blanc.png",
+							heureNourrissage: {debut: 5, fin: 36}
+						}
+					},
+					selectedtype: ""
+				}), 
+
+				methods: 
+				{ 
+					ajouterTypeFamilier(){
+						this.listeFamiliers.push({type: this.selectedtype, heureDernierRepas: moment().locale("fr").format("HH:mm // D MMMM")});
+						console.log(this.listeFamiliers[0].heureDernierRepas);
+						localStorage.setItem('familiers', JSON.stringify(this.listeFamiliers));
+						this.selectedtype = ""; // retirer cette ligne pour faire plein de Wabbits :D !!
+					},
+					retirerTypeFamilier(type){
+						this.listeFamiliers = this.listeFamiliers.filter((fam) => {return fam.type != type});
+						localStorage.setItem('familiers', JSON.stringify(this.listeFamiliers));
+					},
+
+					afficherNomFamilier(type){
+						return this.typeFamilier[type].nom;
+					},
+					iconeFamilier(type){
+						return this.typeFamilier[type].icone;
+					},
+					afficherMinimumProchainRepas(type, heureDernierRepas) {
+						return moment(heureDernierRepas, "HH:mm // D MMMM")
+							.clone()
+							.add(this.typeFamilier[type].heureNourrissage.debut, 'hours')
+							.locale("fr")
+							.format("HH:mm // D MMMM");
+					},
+					afficherMaximumProchainRepas(type, heureDernierRepas) {
+						return moment(heureDernierRepas, "HH:mm // D MMMM")
+							.clone()
+							.add(this.typeFamilier[type].heureNourrissage.fin, 'hours')
+							.locale("fr")
+							.format("HH:mm // D MMMM");
+					},
+					nourrirTypeFamilier(type) {
+   						let index = this.listeFamiliers
+   							.map((fam)=>fam.type)
+   							.indexOf(type);
+    					this.listeFamiliers[index].heureDernierRepas = moment()
+    						.locale("fr")
+    						.format("HH:mm // D MMMM");
+    					this.listeFamiliers = Array.from(this.listeFamiliers);
+    					localStorage.setItem('familiers', JSON.stringify(this.listeFamiliers));
+					}
+				}, 
+
+				computed: {
+					listeTypesFamiliersDisponibles() {
+						let typesManages = this.listeFamiliers.map((familier) => {return familier.type});
+						return Object.entries(this.typeFamilier)
+							.map((entry) => {return {text: entry[1].nom, value: entry[0]}})
+							.filter((type) => {return typesManages.indexOf(type.value) == -1});
+					}
+				},
+
+				created() {
+					let familiers = JSON.parse(localStorage.getItem('familiers'));
+					if (familiers==undefined) 
+					{
+						console.log("Aucun familier trouvé");
+					}
+					else { 
+						this.listeFamiliers= familiers;
+					}
+				}
+			});
+		</script>
+	</body>
+</html>
