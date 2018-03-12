@@ -68,12 +68,13 @@
 						@click="nourrirTypeFamilier(familier.type)"
 						class="xs12 sm4 md2 pl-2 pr-3 py-2 pb-4"
 						:key="familier.type"
+						class="pas-nourri"
 						v-for="familier in familiersTries"> 
 						<!-- https://vuetifyjs.com/en/style/colors --> <!-- Effet surbrillance colorée quand je clique -->
 							<v-card
 							class="elevation-7" 
 							style="background-color: #F57C00" 
-							class="pas-nourri"
+							
 							:id="familier.type"
 							v-ripple="{ class: 'green--text' }"
 							>
@@ -97,7 +98,7 @@
 						</v-flex>
 					</v-layout>
 				</v-container>
-				<v-footer class="px-2 py-2" color="orange darken-3"><v-spacer></v-spacer>Fait avec&nbsp;<v-icon color="red">fa-heart</v-icon>&nbsp;par LivOriona & Genroa</v-footer>
+				<v-footer :fixed="true" class="elevation-10 px-2 py-2" color="orange darken-3"><v-spacer></v-spacer>Fait avec&nbsp;<v-icon color="red">fa-heart</v-icon>&nbsp;par LivOriona & Genroa</v-footer>
 			</v-content>
 			</v-app>
 		</div>
