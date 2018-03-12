@@ -7,6 +7,8 @@
 		<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons">
 		<!-- CSS pour les composants de Vuetify -->
 		<link rel="stylesheet" type="text/css" href="https://unpkg.com/vuetify/dist/vuetify.min.css">
+		<!-- Fontawesome icones -->
+		<link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">
 	</head>
 	<body>
 		<!-- Lien vers le framework VueJS -->
@@ -26,16 +28,16 @@
 			<v-content>
 				<v-container fluid>
 					<v-layout class="row wrap"> <!-- Barre pour ajouter des familiers -->
-						<v-flex class="xs3">
+						<v-flex class="xs12 sm3">
 							<v-tooltip bottom>
 								<v-select slot="activator" :disabled="listeTypesFamiliersDisponibles.length == 0" dark color="orange darken-3" :items="listeTypesFamiliersDisponibles" v-model="selectedtype" label="Choisissez vos types de familiers" autocomplete></v-select>
 								<span>Détendez-vous, vous gérez déjà toute l'animalerie !</span>
 							</v-tooltip>
 						</v-flex>
-						<v-flex class="xs3">
+						<v-flex class="xs12 sm3">
 							<v-btn dark color="orange darken-3" :disabled="selectedtype==''" @click="ajouterTypeFamilier()">Ajouter</v-btn> 
 						</v-flex>
-						<v-flex class="xs3">
+						<v-flex class="xs12 sm3">
 							<v-radio-group dark v-model="choixTri" label="Tri :" class="pt-0" @change="sauvegardeInfos()">
 								<v-radio
 								label="Prochain repas le plus proche"
@@ -49,7 +51,7 @@
 								></v-radio>
 							</v-radio-group>
 						</v-flex>
-						<v-flex class="xs3">
+						<v-flex class="xs12 sm3">
 							<v-switch
 							dark
     						label="Activer/Désactiver les sons"
@@ -64,7 +66,7 @@
 						
 						style="cursor:pointer"
 						@click="nourrirTypeFamilier(familier.type)"
-						class="xs2 mx-3 my-3 pl-2 pr-3 py-2 pb-4"
+						class="xs12 sm4 md2 pl-2 pr-3 py-2 pb-4"
 						:key="familier.type"
 						v-for="familier in familiersTries"> 
 						<!-- https://vuetifyjs.com/en/style/colors --> <!-- Effet surbrillance colorée quand je clique -->
@@ -94,8 +96,8 @@
 							</v-card>		
 						</v-flex>
 					</v-layout>
-
 				</v-container>
+				<v-footer class="px-2 py-2" color="orange darken-3"><v-spacer></v-spacer>Fait avec&nbsp;<v-icon color="red">fa-heart</v-icon>&nbsp;par LivOriona & Genroa</v-footer>
 			</v-content>
 			</v-app>
 		</div>
