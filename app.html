@@ -34,12 +34,26 @@
 						<v-flex class="xs3">
 							<v-btn color="success" :disabled="selectedtype==''" @click="ajouterTypeFamilier()">Ajouter</v-btn> 
 						</v-flex>
-						<v-flex class="xs3 offset-xs2">
+						<v-flex class="xs2">
+							<v-radio-group v-model="choixTri" label="Tri :" class="pt-0" @change="sauvegardeInfos()">
+								<v-radio
+								label="Prochain repas le plus proche"
+								value="prochainRepas"
+								color="green darken-2"
+								></v-radio>
+								<v-radio
+								label="Nom"
+								value="nom"
+								color="green darken-2"
+								></v-radio>
+							</v-radio-group>
+						</v-flex>
+						<v-flex class="xs3">
 							<v-switch
     						label="Activer/Désactiver les sons"
       						v-model="choixAudio"
       						color="green darken-2"
-      						@change="sauvegardePreferences()"> <!-- Bouton Switch son -->
+      						@change="sauvegardeInfos()"> <!-- Bouton Switch son -->
       						</v-switch>
 						</v-flex>
 					</v-layout>
@@ -49,8 +63,9 @@
 						@click="nourrirTypeFamilier(familier.type)" 
 						style="cursor:pointer"
 						:id="familier.type"
+						:key="familier.type"
 						class="xs2 elevation-5 mx-3 my-3 pl-2 pr-3 py-2 pb-4 pas-nourri" 
-						v-for="familier in listeFamiliers"> 
+						v-for="familier in familiersTries"> 
 						<!-- https://vuetifyjs.com/en/style/colors --> <!-- Effet surbrillance colorée quand je clique -->
 							<v-container fluid>
 								<v-layout class="row wrap">
@@ -159,7 +174,8 @@
 						}
 					},
 					selectedtype: "",
-					choixAudio: true
+					choixAudio: true,
+					choixTri: "prochainRepas"
 				}), 
 
 				methods: 
@@ -171,13 +187,12 @@
 							.locale("fr") // Tu me mets le format en français stp 
 							.format("HH:mm // D MMMM") // Format exacte que je demande. C'est la chaîne stockée dans heureDernierRepas
 						});
-						localStorage // sac où je stocke/sauvegarde des trucs / Je mets une chaîne dans le localStorage, avec une étiquette "familiers" ici pour la retrouver
-							.setItem('familiers', JSON.stringify(this.listeFamiliers)); // JSON.stringtify = je transforme mon Objet en une chaine de caractères (string)
+						this.sauvegardeInfos();
 						this.selectedtype = ""; // retirer cette ligne pour faire plein de Wabbits :D !! ( ? :( )
 					},
 					retirerTypeFamilier(type){
 						this.listeFamiliers = this.listeFamiliers.filter((fam) => {return fam.type != type}); // 
-						localStorage.setItem('familiers', JSON.stringify(this.listeFamiliers)); // Je sauvegarde ce que j'ai fait au-dessus
+						this.sauvegardeInfos(); // Je sauvegarde ce que j'ai fait au-dessus
 					},
 
 					afficherNomFamilier(type){
@@ -206,7 +221,7 @@
     						.locale("fr")
     						.format("HH:mm // D MMMM");
     					this.listeFamiliers = Array.from(this.listeFamiliers); // Sauvegarder la liste des familiers
-    					localStorage.setItem('familiers', JSON.stringify(this.listeFamiliers)); // Je sauvegarde ce que j'ai fait au-dessus
+    					this.sauvegardeInfos(); // Je sauvegarde ce que j'ai fait au-dessus
     					if (this.choixAudio==true) {
     						this.typeFamilier[type].sound.play();
     					}
@@ -220,8 +235,28 @@
 						}, 1);
 					},
 
-					sauvegardePreferences() {
+					sauvegardeInfos() {
 						localStorage.setItem('choixAudio', JSON.stringify(this.choixAudio));
+						localStorage.setItem('choixTri', JSON.stringify(this.choixTri));
+						localStorage.setItem('familiers', JSON.stringify(this.listeFamiliers));
+					},
+
+					chargerInfos() {
+						let familiers = JSON.parse(localStorage.getItem('familiers'));
+						if (familiers!==null) {
+							this.listeFamiliers= familiers;
+						}
+
+						let choixAudio = JSON.parse(localStorage.getItem('choixAudio'));
+						if (choixAudio!==null) {
+							this.choixAudio=choixAudio;
+						}
+
+						let choixTri = JSON.parse(localStorage.getItem('choixTri'));
+						console.log(choixTri);
+						if (choixTri!==null) {
+							this.choixTri=choixTri;
+						}
 					}
 				}, 
 
@@ -231,22 +266,41 @@
 						return Object.entries(this.typeFamilier) // Je récupère la liste des couples clef/valeur de l'encyclopédie
 							.map((entry) => {return {text: entry[1].nom, value: entry[0]}}) // Je transforme chaque entrée en un objet qui contient le nom du familier et le type de familier
 							.filter((type) => {return typesManages.indexOf(type.value) == -1}); // Filtre pour retirer les familiers déjà en cours de gestion
+					},
+					familiersTries() {
+						switch(this.choixTri) {
+							case "nom":
+								return this.listeFamiliers.sort((famType1, famType2) => {
+									let type1 = this.typeFamilier[famType1.type];
+									let type2 = this.typeFamilier[famType2.type];
+
+									if(type1.nom < type2.nom) return -1;
+									if(type1.nom > type2.nom) return 1;
+
+									return 0;
+								});
+
+							case "prochainRepas":
+								return this.listeFamiliers.sort((famType1, famType2) => {
+									let type1 = this.typeFamilier[famType1.type];
+									let type2 = this.typeFamilier[famType2.type];
+
+									let prochainRepas1 = moment(famType1.heureDernierRepas, "HH:mm // D MMMM").add(type1.heureNourrissage.debut, 'hours');
+									let prochainRepas2 = moment(famType2.heureDernierRepas, "HH:mm // D MMMM").add(type2.heureNourrissage.debut, 'hours');
+
+									let comparaison = prochainRepas1.diff(prochainRepas2, 'minutes');
+
+									if(comparaison < 0) return -1;
+									if(comparaison > 0) return 1;
+									return 0;
+								});
+						}
+						return this.listeFamiliers;
 					}
 				},
 
 				created() {
-					let familiers = JSON.parse(localStorage.getItem('familiers'));
-					if (familiers==undefined) 
-					{
-						console.log("Aucun familier trouvé");
-					}
-					else { 
-						this.listeFamiliers= familiers;
-					}
-					let choixAudio = JSON.parse(localStorage.getItem('choixAudio'));
-					if (choixAudio!=undefined) {
-						this.choixAudio=choixAudio;
-					}
+					this.chargerInfos();
 				}
 			});
 		</script>
