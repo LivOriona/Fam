@@ -17,72 +17,81 @@
 		<script type="text/javascript" src="moment.js"></script>
 <!--  -->
 		<div id="app">
-			<v-app id="inspire">
-			<v-toolbar app> <!-- Barre de menu -->
+			<v-app style="background-color: #6D4C41" id="inspire">
+			<v-toolbar style="background-color: #EF6C00" app> <!-- Barre de menu -->
 				<v-toolbar-title>Application de Nourrissage de Familiers</v-toolbar-title>
 				<v-spacer></v-spacer>
 				<img src="img/wabbit.png" style="height:50px"/>
 			</v-toolbar>
 			<v-content>
-				<v-container>
-					Ici on va faire la page :3 <br>
-					Youpiiiii :D , c'est parti ! <br>
+				<v-container fluid>
 					<v-layout class="row wrap"> <!-- Barre pour ajouter des familiers -->
-						<v-flex class="xs4">
-							<v-select :items="listeTypesFamiliersDisponibles" v-model="selectedtype" label="Choisissez vos types de familiers" autocomplete></v-select>
+						<v-flex class="xs3">
+							<v-tooltip bottom>
+								<v-select slot="activator" :disabled="listeTypesFamiliersDisponibles.length == 0" dark color="orange darken-3" :items="listeTypesFamiliersDisponibles" v-model="selectedtype" label="Choisissez vos types de familiers" autocomplete></v-select>
+								<span>Détendez-vous, vous gérez déjà toute l'animalerie !</span>
+							</v-tooltip>
 						</v-flex>
 						<v-flex class="xs3">
-							<v-btn color="success" :disabled="selectedtype==''" @click="ajouterTypeFamilier()">Ajouter</v-btn> 
+							<v-btn dark color="orange darken-3" :disabled="selectedtype==''" @click="ajouterTypeFamilier()">Ajouter</v-btn> 
 						</v-flex>
-						<v-flex class="xs2">
-							<v-radio-group v-model="choixTri" label="Tri :" class="pt-0" @change="sauvegardeInfos()">
+						<v-flex class="xs3">
+							<v-radio-group dark v-model="choixTri" label="Tri :" class="pt-0" @change="sauvegardeInfos()">
 								<v-radio
 								label="Prochain repas le plus proche"
 								value="prochainRepas"
-								color="green darken-2"
+								color="orange darken-3"
 								></v-radio>
 								<v-radio
 								label="Nom"
 								value="nom"
-								color="green darken-2"
+								color="orange darken-3"
 								></v-radio>
 							</v-radio-group>
 						</v-flex>
 						<v-flex class="xs3">
 							<v-switch
+							dark
     						label="Activer/Désactiver les sons"
       						v-model="choixAudio"
-      						color="green darken-2"
+      						color="orange darken-3"
       						@change="sauvegardeInfos()"> <!-- Bouton Switch son -->
       						</v-switch>
 						</v-flex>
 					</v-layout>
 					<v-layout class="row wrap"> <!-- Affichace des familiers avec leurs icônes -->
 						<v-flex 
-						v-ripple="{ class: 'green--text' }" 
-						@click="nourrirTypeFamilier(familier.type)" 
+						
 						style="cursor:pointer"
-						:id="familier.type"
+						@click="nourrirTypeFamilier(familier.type)"
+						class="xs2 mx-3 my-3 pl-2 pr-3 py-2 pb-4"
 						:key="familier.type"
-						class="xs2 elevation-5 mx-3 my-3 pl-2 pr-3 py-2 pb-4 pas-nourri" 
 						v-for="familier in familiersTries"> 
 						<!-- https://vuetifyjs.com/en/style/colors --> <!-- Effet surbrillance colorée quand je clique -->
-							<v-container fluid>
-								<v-layout class="row wrap">
-									<v-flex class="xs9">
-										{{afficherMinimumProchainRepas(familier.type, familier.heureDernierRepas)}} <br>
-										{{afficherMaximumProchainRepas(familier.type, familier.heureDernierRepas)}}
-									</v-flex>
-									<v-flex class="xs3 ">
-										<v-btn flat icon color="red" @click="retirerTypeFamilier(familier.type)"> <!-- Bouton poubelle -->
-											<v-icon>delete</v-icon>
-										</v-btn>
-									</v-flex>	
-								</v-layout>	
-							</v-container>
-							<v-layout class="column align-center">
+							<v-card
+							class="elevation-7" 
+							style="background-color: #F57C00" 
+							class="pas-nourri"
+							:id="familier.type"
+							v-ripple="{ class: 'green--text' }"
+							>
+								<v-container fluid>
+									<v-layout class="row wrap">
+										<v-flex class="xs9">
+											{{afficherMinimumProchainRepas(familier.type, familier.heureDernierRepas)}} <br>
+											{{afficherMaximumProchainRepas(familier.type, familier.heureDernierRepas)}}
+										</v-flex>
+										<v-flex class="xs3 ">
+											<v-btn flat icon color="red" @click="retirerTypeFamilier(familier.type)"> <!-- Bouton poubelle -->
+												<v-icon>delete</v-icon>
+											</v-btn>
+										</v-flex>	
+									</v-layout>	
+								</v-container>
+								<v-layout class="column align-center">
 										<img :src="iconeFamilier(familier.type)" style="width:100%" />	<!-- icone du familier -->
-							</v-layout>		
+									</v-layout>	
+							</v-card>		
 						</v-flex>
 					</v-layout>
 
@@ -93,10 +102,10 @@
 
 		<style>
 			.nourri {
-				background-color: green;
+				background-color: green !important;
 			}
 			.pas-nourri {
-				transition-duration: 300s;
+				transition: background-color 300s;
 			}
 		</style>
 
@@ -233,6 +242,7 @@
 							elem.classList.add("pas-nourri");
 							elem.classList.remove("nourri");
 						}, 1);
+						
 					},
 
 					sauvegardeInfos() {
