@@ -34,10 +34,18 @@
 						<v-flex class="xs3">
 							<v-btn color="success" :disabled="selectedtype==''" @click="ajouterTypeFamilier()">Ajouter</v-btn> 
 						</v-flex>
+						<v-flex class="xs3 offset-xs2">
+							<v-switch
+    						label="Activer/Désactiver les sons"
+      						v-model="choixAudio"
+      						color="green darken-2"
+      						@change="sauvegardePreferences()"> <!-- Bouton Switch son -->
+      						</v-switch>
+						</v-flex>
 					</v-layout>
 					<v-layout class="row wrap"> <!-- Affichace des familiers avec leurs icônes -->
 						<v-flex 
-						v-ripple="{ class: 'lime--text' }" 
+						v-ripple="{ class: 'green--text' }" 
 						@click="nourrirTypeFamilier(familier.type)" 
 						style="cursor:pointer"
 						:id="familier.type"
@@ -90,58 +98,68 @@
 						{
 							nom: "Wabbit", 
 							icone: "img\\wabbit.png",
-							heureNourrissage: {debut: 23, fin: 48}
+							heureNourrissage: {debut: 23, fin: 48},
+							sound: new Audio("sound\\loutre.wav")
 						},
 						"chacha" :
 						{
 							nom: "Chacha", 
 							icone: "img\\chacha.png",
-							heureNourrissage: {debut: 5, fin: 18}
+							heureNourrissage: {debut: 5, fin: 18},
+							sound: new Audio("sound\\leopard.wav")
 						},
 						"bworky" :
 						{
 							nom: "Bworky", 
 							icone: "img\\bworky.png",
-							heureNourrissage: {debut: 5, fin: 72}
+							heureNourrissage: {debut: 5, fin: 72},
+							sound: new Audio("sound\\sheep.wav")
 						},
 						"corbac" :
 						{
 							nom: "Vilain Petit Corbac", 
 							icone: "img\\corbac.png",
-							heureNourrissage: {debut: 5, fin: 72}
+							heureNourrissage: {debut: 5, fin: 72},
+							sound: new Audio("sound\\canard.wav")
 						},
 						"koalak_sanguin" :
 						{
 							nom: "Koalak Sanguin", 
 							icone: "img\\koalak_sanguin.png",
-							heureNourrissage: {debut: 5, fin: 72}
+							heureNourrissage: {debut: 5, fin: 72},
+							sound: new Audio("sound\\marmotte.wav")
 						},
 						"peki" :
 						{
 							nom: "Péki", 
 							icone: "img\\peki.png",
-							heureNourrissage: {debut: 3, fin: 36}
+							heureNourrissage: {debut: 3, fin: 36},
+							sound: new Audio("sound\\ouaf.wav")
 						},
 						"nomoon" :
 						{
 							nom: "Nomoon", 
 							icone: "img\\nomoon.png",
-							heureNourrissage: {debut: 24, fin: 72}
+							heureNourrissage: {debut: 24, fin: 72},
+							sound: new Audio("sound\\fennec.wav")
 						},
 						"petit_chienchien_noir" :
 						{
 							nom: "Petit Chienchien Noir", 
 							icone: "img\\petit_chienchien_noir.png",
-							heureNourrissage: {debut: 11, fin: 36}
+							heureNourrissage: {debut: 11, fin: 36},
+							sound: new Audio("sound\\loup.wav")
 						},
 						"petit_chacha_blanc" :
 						{
 							nom: "Petit Chacha Blanc", 
 							icone: "img\\petit_chacha_blanc.png",
-							heureNourrissage: {debut: 5, fin: 36}
+							heureNourrissage: {debut: 5, fin: 36},
+							sound: new Audio("sound\\tigre.wav")
 						}
 					},
-					selectedtype: ""
+					selectedtype: "",
+					choixAudio: true
 				}), 
 
 				methods: 
@@ -181,15 +199,17 @@
 							.format("HH:mm // D MMMM");
 					},
 					nourrirTypeFamilier(type) {
-						let index = this.listeFamiliers
-							.map((fam)=>fam.type) // je fais en sorte de ne conserver que la liste des TYPES de familiers
-							.indexOf(type); // Je cherche la position du type que j'ai donné
-						this.listeFamiliers[index].heureDernierRepas = moment() // Le type de familier qui a la position ci-dessus, je modifie son heure de dernier repas
-							.locale("fr")
-							.format("HH:mm // D MMMM");
-						this.listeFamiliers = Array.from(this.listeFamiliers); // Sauvegarder la liste des familiers
-						localStorage.setItem('familiers', JSON.stringify(this.listeFamiliers)); // Je sauvegarde ce que j'ai fait au-dessus
-
+   						let index = this.listeFamiliers
+   							.map((fam)=>fam.type) // je fais en sorte de ne conserver que la liste des TYPES de familiers
+   							.indexOf(type); // Je cherche la position du type que j'ai donné
+    					this.listeFamiliers[index].heureDernierRepas = moment() // Le type de familier qui a la position ci-dessus, je modifie son heure de dernier repas
+    						.locale("fr")
+    						.format("HH:mm // D MMMM");
+    					this.listeFamiliers = Array.from(this.listeFamiliers); // Sauvegarder la liste des familiers
+    					localStorage.setItem('familiers', JSON.stringify(this.listeFamiliers)); // Je sauvegarde ce que j'ai fait au-dessus
+    					if (this.choixAudio==true) {
+    						this.typeFamilier[type].sound.play();
+    					}
 						let elem = document.querySelector('#'+type);
 						elem.classList.remove("pas-nourri");
 						elem.classList.add("nourri");
@@ -198,6 +218,10 @@
 							elem.classList.add("pas-nourri");
 							elem.classList.remove("nourri");
 						}, 1);
+					},
+
+					sauvegardePreferences() {
+						localStorage.setItem('choixAudio', JSON.stringify(this.choixAudio));
 					}
 				}, 
 
@@ -218,6 +242,10 @@
 					}
 					else { 
 						this.listeFamiliers= familiers;
+					}
+					let choixAudio = JSON.parse(localStorage.getItem('choixAudio'));
+					if (choixAudio!=undefined) {
+						this.choixAudio=choixAudio;
 					}
 				}
 			});
