@@ -12,104 +12,126 @@
 		<link rel="stylesheet" type="text/css" href="css/style.css">
 	</head>
 	<body>
+		<script type="text/javascript">
+			_isDesktopApp = function() {
+				let res = window['process'] != undefined && process.versions != undefined && process.versions.electron != undefined;
+				return res;
+			}
+		</script>
+
+		<!-- Lien vers le framework VueJS -->
+		<script v-if="!isDesktopApp()" type="text/javascript" src="https://unpkg.com/vue/dist/vue.js"></script>
+		<!-- Lien vers la lib Vuetify -->
+		<script v-if="!isDesktopApp()" type="text/javascript" src="https://unpkg.com/vuetify/dist/vuetify.min.js"></script>
+		<!-- Lien vers la librairie MomentJS -->
+		<script v-if="!isDesktopApp()" type="text/javascript" src="moment.js"></script>
+
+
+
+
 		<div id="app">
-			<v-app style="background-color: #6D4C41" id="inspire">
-			<v-toolbar dark style="background-color: #EF6C00" class="draggable-toolbar" app> <!-- Barre de menu -->
-				<v-toolbar-title>Gestion de Nourrissage de Familiers Dofus</v-toolbar-title>
-				<v-spacer></v-spacer>
-				<img src="img/wabbit.png" style="height:50px"/>
-				<!-- controles de la fenêtre -->
-				<v-btn icon @click="remote.getCurrentWindow().minimize()" class="window-min-button mx-0" dark><v-icon class="window-min-button">remove</v-icon></v-btn>
-				<v-btn icon @click="remote.getCurrentWindow().isMaximized() ? remote.getCurrentWindow().unmaximize():remote.getCurrentWindow().maximize()" class="window-max-button mx-0" dark><v-icon>add</v-icon></v-btn>
-				<v-btn icon @click="remote.getCurrentWindow().close()" class="window-close-button ml-0" dark><v-icon>highlight_off</v-icon></v-btn>
-			</v-toolbar>
-			<v-content>
-				<v-container fluid>
-					<v-layout class="row wrap"> <!-- Barre pour ajouter des familiers -->
-						<v-flex class="xs12 sm3">
-							<v-tooltip :disabled="listeTypesFamiliersDisponibles.length > 0" bottom>
-								<v-select slot="activator" :disabled="listeTypesFamiliersDisponibles.length == 0" dark color="orange darken-3" :items="listeTypesFamiliersDisponibles" v-model="selectedtype" label="Choisissez vos types de familiers" autocomplete></v-select>
-								<span>Détendez-vous, vous gérez déjà toute l'animalerie !</span>
-							</v-tooltip>
-						</v-flex>
-						<v-flex class="xs12 sm3">
-							<v-btn dark color="orange darken-3" :disabled="selectedtype==''" @click="ajouterTypeFamilier()">Ajouter</v-btn> 
-						</v-flex>
-						<v-flex class="xs12 sm3">
-							<v-radio-group dark v-model="choixTri" label="Tri :" class="pt-0" @change="sauvegardeInfos()">
-								<v-radio
-								label="Prochain repas le plus proche"
-								value="prochainRepas"
-								color="orange darken-3"
-								></v-radio>
-								<v-radio
-								label="Nom"
-								value="nom"
-								color="orange darken-3"
-								></v-radio>
-							</v-radio-group>
-						</v-flex>
-						<v-flex class="xs12 sm3">
-							<v-switch
-							dark
-    						label="Activer/Désactiver les sons"
-      						v-model="choixAudio"
-      						color="orange darken-3"
-      						@change="sauvegardeInfos()"> <!-- Bouton Switch son -->
-      						</v-switch>
-						</v-flex>
-					</v-layout>
-					<v-layout class="row wrap"> <!-- Affichace des familiers avec leurs icônes -->
-						<v-flex 
-						
-						style="cursor:pointer"
-						@click="nourrirTypeFamilier(familier.type)"
-						class="xs12 sm4 md2 pl-2 pr-3 py-2 pb-4"
-						:key="familier.type"
-						class="pas-nourri"
-						v-for="familier in familiersTries"> 
-						<!-- https://vuetifyjs.com/en/style/colors --> <!-- Effet surbrillance colorée quand je clique -->
-							<v-card
-							class="elevation-7" 
-							style="background-color: #F57C00" 
+			<v-app style="background-color: #6D4C41" id="app">
+				<v-toolbar dark style="background-color: #EF6C00; display: none" class="draggable-toolbar" id="toolbar" app> <!-- Barre de menu -->
+					<v-toolbar-title>Gestion de Nourrissage de Familiers Dofus</v-toolbar-title>
+					<v-spacer></v-spacer>
+					<img src="img/wabbit.png" style="height:50px"/>
+					<!-- controles de la fenêtre -->
+					<v-icon v-if="isDesktopApp()" dark @click="remote.getCurrentWindow().minimize()" class="window-min-button">remove</v-icon>
+					<v-icon v-if="isDesktopApp()" dark @click="remote.getCurrentWindow().isMaximized() ? remote.getCurrentWindow().unmaximize():remote.getCurrentWindow().maximize()" class="window-max-button">add</v-icon>
+					<v-icon v-if="isDesktopApp()" dark class="window-close-button" @click="remote.getCurrentWindow().close()">highlight_off</v-icon>
+				</v-toolbar>
+				<v-content id="content" style="display: none">
+					<v-container fluid>
+						<v-layout class="row wrap"> <!-- Barre pour ajouter des familiers -->
+							<v-flex class="xs12 sm3">
+								<v-tooltip :disabled="listeTypesFamiliersDisponibles.length > 0" bottom>
+									<v-select slot="activator" :disabled="listeTypesFamiliersDisponibles.length == 0" dark color="orange darken-3" :items="listeTypesFamiliersDisponibles" v-model="selectedtype" label="Choisissez vos types de familiers" autocomplete></v-select>
+									<span>Détendez-vous, vous gérez déjà toute l'animalerie !</span>
+								</v-tooltip>
+							</v-flex>
+							<v-flex class="xs12 sm3">
+								<v-btn dark color="orange darken-3" :disabled="selectedtype==''" @click="ajouterTypeFamilier()">Ajouter</v-btn> 
+							</v-flex>
+							<v-flex class="xs12 sm3">
+								<v-radio-group dark v-model="choixTri" label="Tri :" class="pt-0" @change="sauvegardeInfos()">
+									<v-radio
+									label="Prochain repas le plus proche"
+									value="prochainRepas"
+									color="orange darken-3"
+									></v-radio>
+									<v-radio
+									label="Nom"
+									value="nom"
+									color="orange darken-3"
+									></v-radio>
+								</v-radio-group>
+							</v-flex>
+							<v-flex class="xs12 sm3">
+								<v-switch
+								dark
+	    						label="Activer/Désactiver les sons"
+	      						v-model="choixAudio"
+	      						color="orange darken-3"
+	      						@change="sauvegardeInfos()"> <!-- Bouton Switch son -->
+	      						</v-switch>
+							</v-flex>
+						</v-layout>
+						<v-layout class="row wrap"> <!-- Affichace des familiers avec leurs icônes -->
+							<v-flex 
+							
+							style="cursor:pointer"
+							@click="nourrirTypeFamilier(familier.type)"
+							class="xs12 sm4 md2 pl-2 pr-3 py-2 pb-4"
+							:key="familier.type"
 							class="pas-nourri"
-							:id="familier.type"
-							v-ripple="{ class: 'green--text' }"
-							>
-								<v-container fluid>
-									<v-layout class="row wrap">
-										<v-flex class="xs9">
-											{{afficherMinimumProchainRepas(familier.type, familier.heureDernierRepas)}} <br>
-											{{afficherMaximumProchainRepas(familier.type, familier.heureDernierRepas)}}
-										</v-flex>
-										<v-flex class="xs3 ">
-											<v-btn flat icon color="red" @click="retirerTypeFamilier(familier.type)"> <!-- Bouton poubelle -->
-												<v-icon>delete</v-icon>
-											</v-btn>
-										</v-flex>	
-									</v-layout>	
-								</v-container>
-								<v-layout class="column align-center">
-										<img :src="iconeFamilier(familier.type)" style="width:100%" />	<!-- icone du familier -->
-									</v-layout>	
-							</v-card>		
-						</v-flex>
-					</v-layout>
-				</v-container>
-				<v-footer :fixed="true" class="elevation-24 px-2 py-2" color="orange darken-3"><v-spacer></v-spacer>V.1.0&nbsp;Fait avec&nbsp;<v-icon color="red">favorite</v-icon>&nbsp;par LivOriona & Genroa</v-footer>
-			</v-content>
+							v-for="familier in familiersTries"> 
+							<!-- https://vuetifyjs.com/en/style/colors --> <!-- Effet surbrillance colorée quand je clique -->
+								<v-card
+								class="elevation-7" 
+								style="background-color: #F57C00" 
+								class="pas-nourri"
+								:id="familier.type"
+								v-ripple="{ class: 'green--text' }"
+								>
+									<v-container fluid>
+										<v-layout class="row wrap">
+											<v-flex class="xs9">
+												{{afficherMinimumProchainRepas(familier.type, familier.heureDernierRepas)}} <br>
+												{{afficherMaximumProchainRepas(familier.type, familier.heureDernierRepas)}}
+											</v-flex>
+											<v-flex class="xs3 ">
+												<v-btn flat icon color="red" @click="retirerTypeFamilier(familier.type)"> <!-- Bouton poubelle -->
+													<v-icon>delete</v-icon>
+												</v-btn>
+											</v-flex>	
+										</v-layout>	
+									</v-container>
+									<v-layout class="column align-center">
+											<img :src="iconeFamilier(familier.type)" style="width:100%" />	<!-- icone du familier -->
+										</v-layout>	
+								</v-card>		
+							</v-flex>
+						</v-layout>
+					</v-container>
+					<v-footer :fixed="true" class="elevation-24 px-2 py-2" color="orange darken-3"><v-spacer></v-spacer>V.1.0&nbsp;Fait avec&nbsp;<v-icon color="red">favorite</v-icon>&nbsp;par LivOriona & Genroa</v-footer>
+				</v-content>
 			</v-app>
+			
 		</div>
 
 		<script type="text/javascript">
-			const remote = require('electron').remote;
-			const app = require('electron');
-			console.log(app);
-			const moment = require('moment');
-			const Vue = require('vue/dist/vue.js');
-			const Vuetify = require('vuetify');
+			var remote, app, moment, Vue, Vuetify;
+
+			if(_isDesktopApp()) {
+				remote = require('electron').remote;
+				app = require('electron');
+				moment = require('moment');
+				Vue = require('vue/dist/vue.js');
+				Vuetify = require('vuetify');
+				
+				Vue.use(Vuetify);
+			}
 			
-			Vue.use(Vuetify);
 			
 			new Vue({
 				el: '#app',
@@ -267,6 +289,10 @@
 						if (choixTri!==null) {
 							this.choixTri=choixTri;
 						}
+					},
+
+					isDesktopApp() {
+						return _isDesktopApp();
 					}
 				}, 
 
@@ -313,6 +339,8 @@
 					this.chargerInfos();
 					
 					this.remote = remote;
+					document.getElementById('toolbar').style.display = 'inline';
+					document.getElementById('content').style.display = 'inline';
 				}
 			});
 		</script>

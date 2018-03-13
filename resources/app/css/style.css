@@ -27,8 +27,11 @@
 	background: #555;
 }
 
+
+
 .window-min-button, .window-max-button, .window-close-button {
 	-webkit-app-region: no-drag;
+	cursor: pointer;
 }
 
 .window-min-button:hover {
