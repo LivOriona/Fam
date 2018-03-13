@@ -5,18 +5,20 @@
 	transition: background-color 300s;
 }
 
- /* width */
+
+/* width */
 ::-webkit-scrollbar {
-	width: 10px;
+	width: 12px;
 }
 
 /* Track */
 ::-webkit-scrollbar-track {
-	background: #f1f1f1;
+	background-color: #F5F5F5;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
 	background: #888;
 }
 
@@ -42,4 +44,8 @@
 .draggable-toolbar {
 	-webkit-user-select: none;
 	-webkit-app-region: drag;
+}
+
+html {
+  overflow-y: auto;
 }
