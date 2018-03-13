@@ -6,24 +6,22 @@
 		<!-- CSS pour icones + police d'écriture Roboto -->
 		<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons">
 		<!-- CSS pour les composants de Vuetify -->
-		<link rel="stylesheet" type="text/css" href="https://unpkg.com/vuetify/dist/vuetify.min.css">
-		<!-- Fontawesome icones -->
-		<link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">
+		<link rel="stylesheet" type="text/css" href="css/vuetify.min.css">
+		
+		<!-- CSS de l'application -->
+		<link rel="stylesheet" type="text/css" href="css/style.css">
 	</head>
 	<body>
-		<!-- Lien vers le framework VueJS -->
-		<script type="text/javascript" src="https://unpkg.com/vue/dist/vue.js"></script>
-		<!-- Lien vers la lib Vuetify -->
-		<script type="text/javascript" src="https://unpkg.com/vuetify/dist/vuetify.min.js"></script>
-		<!-- Lien vers la librairie MomentJS -->
-		<script type="text/javascript" src="moment.js"></script>
-<!--  -->
 		<div id="app">
 			<v-app style="background-color: #6D4C41" id="inspire">
-			<v-toolbar style="background-color: #EF6C00" app> <!-- Barre de menu -->
-				<v-toolbar-title>Application de Nourrissage de Familiers</v-toolbar-title>
+			<v-toolbar dark style="background-color: #EF6C00" class="draggable-toolbar" app> <!-- Barre de menu -->
+				<v-toolbar-title>Gestion de Nourrissage de Familiers Dofus</v-toolbar-title>
 				<v-spacer></v-spacer>
 				<img src="img/wabbit.png" style="height:50px"/>
+				<!-- controles de la fenêtre -->
+				<v-btn icon @click="remote.getCurrentWindow().minimize()" class="window-min-button mx-0" dark><v-icon class="window-min-button">remove</v-icon></v-btn>
+				<v-btn icon @click="remote.getCurrentWindow().isMaximized() ? remote.getCurrentWindow().unmaximize():remote.getCurrentWindow().maximize()" class="window-max-button mx-0" dark><v-icon>add</v-icon></v-btn>
+				<v-btn icon @click="remote.getCurrentWindow().close()" class="window-close-button ml-0" dark><v-icon>highlight_off</v-icon></v-btn>
 			</v-toolbar>
 			<v-content>
 				<v-container fluid>
@@ -98,23 +96,20 @@
 						</v-flex>
 					</v-layout>
 				</v-container>
-				<v-footer :fixed="true" class="elevation-24 px-2 py-2" color="orange darken-3"><v-spacer></v-spacer>Fait avec&nbsp;<v-icon color="red">fa-heart</v-icon>&nbsp;par LivOriona & Genroa</v-footer>
+				<v-footer :fixed="true" class="elevation-24 px-2 py-2" color="orange darken-3"><v-spacer></v-spacer>Fait avec&nbsp;<v-icon color="red">favorite</v-icon>&nbsp;par LivOriona & Genroa</v-footer>
 			</v-content>
 			</v-app>
 		</div>
 
-		<style>
-			.nourri {
-				background-color: green !important;
-			}
-			.pas-nourri {
-				transition: background-color 300s;
-			}
-		</style>
-
 		<script type="text/javascript">
+			const remote = require('electron').remote;
+			const moment = require('moment');
+			const Vue = require('vue/dist/vue.js');
+			const Vuetify = require('vuetify');
+			
+			Vue.use(Vuetify);
+			
 			new Vue({
-
 				el: '#app',
 				data: () => // Objet où je stocke toutes mes infos (encyclopédie)
 				({
@@ -187,7 +182,8 @@
 					},
 					selectedtype: "",
 					choixAudio: true,
-					choixTri: "prochainRepas"
+					choixTri: "prochainRepas",
+					remote: null
 				}), 
 
 				methods: 
@@ -314,6 +310,8 @@
 
 				created() {
 					this.chargerInfos();
+					
+					this.remote = remote;
 				}
 			});
 		</script>

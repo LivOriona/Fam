@@ -1,0 +1,45 @@
+.nourri {
+	background-color: green !important;
+}
+.pas-nourri {
+	transition: background-color 300s;
+}
+
+ /* width */
+::-webkit-scrollbar {
+	width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+	background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+	background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+	background: #555;
+}
+
+.window-min-button, .window-max-button, .window-close-button {
+	-webkit-app-region: no-drag;
+}
+
+.window-min-button:hover {
+	color: #7CB342 !important;
+}
+.window-max-button:hover {
+	color: #FFB300 !important;
+}
+.window-close-button:hover {
+	color: red !important;
+}
+
+.draggable-toolbar {
+	-webkit-user-select: none;
+	-webkit-app-region: drag;
+}
