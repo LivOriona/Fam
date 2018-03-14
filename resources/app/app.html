@@ -50,7 +50,7 @@
 								</v-tooltip>
 							</v-flex>
 							<v-flex class="xs12 sm3">
-								<v-btn dark color="orange darken-3" :disabled="selectedtype==''" @click="ajouterTypeFamilier()">Ajouter</v-btn> 
+								<v-btn dark color="orange darken-3" :disabled="selectedtype==''" @click="ajouterencyclopedie()">Ajouter</v-btn> 
 							</v-flex>
 							<v-flex class="xs12 sm3">
 								<v-radio-group dark v-model="choixTri" label="Tri :" class="pt-0" @change="sauvegardeInfos()">
@@ -94,21 +94,33 @@
 								v-ripple="{ class: 'green--text' }"
 								>
 									<v-container fluid>
-										<v-layout class="row wrap">
+										<v-layout class="row">
 											<v-flex class="xs9">
-												{{afficherMinimumProchainRepas(familier.type, familier.heureDernierRepas)}} <br>
-												{{afficherMaximumProchainRepas(familier.type, familier.heureDernierRepas)}}
+												<v-tooltip right>
+													<span slot="activator">{{afficherMinimumProchainRepas(familier.type, familier.heureDernierRepas)}} <br></span>
+													<span> Ma prochaine heure de repas <v-icon color="red">favorite</v-icon> </span>
+												</v-tooltip>
+												<v-tooltip right>
+													<span slot="activator">{{afficherMaximumProchainRepas(familier.type, familier.heureDernierRepas)}} <br></span>
+													<span> Nourris-moi avant cette heure, ou je mange tout ce qui me tombe sous la dent !</span>
+												</v-tooltip>
 											</v-flex>
 											<v-flex class="xs3 ">
-												<v-btn flat icon color="red" @click="retirerTypeFamilier(familier.type)"> <!-- Bouton poubelle -->
+												<v-btn flat icon color="red" @click="retirerencyclopedie(familier.type)"> <!-- Bouton poubelle -->
 													<v-icon>delete</v-icon>
 												</v-btn>
 											</v-flex>	
 										</v-layout>	
 									</v-container>
 									<v-layout class="column align-center">
-											<img :src="iconeFamilier(familier.type)" style="width:100%" />	<!-- icone du familier -->
-										</v-layout>	
+										<v-tooltip bottom>
+											<img :src="iconeFamilier(familier.type)" style="width:100%" slot="activator" />	<!-- icone du familier -->
+											<span>  <span class="strong">Bonus</span> : {{encyclopedie[familier.type].bonus}}<br>
+													<span class="strong">Bonus Max</span> : {{encyclopedie[familier.type].bonusMax}}<br>
+													<span class="strong">Nourriture</span> : {{afficherTypeNourrriture(familier.type)}}<br>	
+											</span>
+										</v-tooltip>
+									</v-layout>	
 								</v-card>		
 							</v-flex>
 						</v-layout>
@@ -138,7 +150,7 @@
 				data: () => // Objet où je stocke toutes mes infos (encyclopédie)
 				({
 					listeFamiliers: [],
-					typeFamilier: 
+					encyclopedie: 
 					{
 						"wabbit" : 
 						{
@@ -180,7 +192,12 @@
 							nom: "Péki", 
 							icone: "img\\peki.png",
 							heureNourrissage: {debut: 3, fin: 36},
-							sound: new Audio("sound\\ouaf.wav")
+							sound: new Audio("sound\\ouaf.wav"), 
+							bonus: "0 à 400 Vitalité",
+							bonusMax: "440 Vitalité",
+							nourriture: ["Riz", "Graine de Pandouille", "Racine de Bulbiflore", "Racine de Bulbuisson", "Racine de Bulbambou, Racine de Bulbig", "Fleur de Bulbiflore", "Feuille de Bulbuisson", "Pousses de Bulbambou", "Feuille de Bambouto", "Feuille de Bambouto Sacré", "Racine Magique de Bambouto", "Racine Magique de Bambouto Sacré"],
+							zoneBonus: "Pandala 40%",
+							dropHormone: "Péki Péki"
 						},
 						"nomoon" :
 						{
@@ -212,7 +229,7 @@
 
 				methods: 
 				{ 
-					ajouterTypeFamilier(){
+					ajouterencyclopedie(){
 						this.listeFamiliers.push({ // Ajouter à la fin de la liste un nouvel élément
 							type: this.selectedtype, 
 							heureDernierRepas: moment() // moment() me retourne l'heure actuelle
@@ -222,29 +239,34 @@
 						this.sauvegardeInfos();
 						this.selectedtype = ""; // retirer cette ligne pour faire plein de Wabbits :D !! ( ? :( )
 					},
-					retirerTypeFamilier(type){
+					retirerencyclopedie(type){
 						this.listeFamiliers = this.listeFamiliers.filter((fam) => {return fam.type != type}); // 
 						this.sauvegardeInfos(); // Je sauvegarde ce que j'ai fait au-dessus
 					},
 
 					afficherNomFamilier(type){
-						return this.typeFamilier[type].nom; // Dans typeFamilier, tu me récupères le nom
+						return this.encyclopedie[type].nom; // Dans encyclopedie, tu me récupères le nom
 					},
 					iconeFamilier(type){
-						return this.typeFamilier[type].icone; // Dans typeFamilier, tu me récupères l'icone
+						return this.encyclopedie[type].icone; // Dans encyclopedie, tu me récupères l'icone
 					},
 					afficherMinimumProchainRepas(type, heureDernierRepas) {
 						return moment(heureDernierRepas, "HH:mm // D MMMM") // Fabrication d'un objet qui représente l'heure du dernier repas
-							.add(this.typeFamilier[type].heureNourrissage.debut, 'hours') // Dans l'encyclopédie, je récupère l'heure de nourrissage minimale. Le .add rajoute une certaine durée à ma date, et je rajoute en heure l'heure minimum de repas
+							.add(this.encyclopedie[type].heureNourrissage.debut, 'hours') // Dans l'encyclopédie, je récupère l'heure de nourrissage minimale. Le .add rajoute une certaine durée à ma date, et je rajoute en heure l'heure minimum de repas
 							.locale("fr")
 							.format("HH:mm // D MMMM");
 					},
 					afficherMaximumProchainRepas(type, heureDernierRepas) {
 						return moment(heureDernierRepas, "HH:mm // D MMMM")
-							.add(this.typeFamilier[type].heureNourrissage.fin, 'hours')
+							.add(this.encyclopedie[type].heureNourrissage.fin, 'hours')
 							.locale("fr")
 							.format("HH:mm // D MMMM");
 					},
+
+					afficherTypeNourrriture(type){
+						return this.encyclopedie[type].nourriture && this.encyclopedie[type].nourriture.join(", ");
+					},
+
 					nourrirTypeFamilier(type) {
    						let index = this.listeFamiliers
    							.map((fam)=>fam.type) // je fais en sorte de ne conserver que la liste des TYPES de familiers
@@ -255,7 +277,7 @@
     					this.listeFamiliers = Array.from(this.listeFamiliers); // Sauvegarder la liste des familiers
     					this.sauvegardeInfos(); // Je sauvegarde ce que j'ai fait au-dessus
     					if (this.choixAudio==true) {
-    						this.typeFamilier[type].sound.play();
+    						this.encyclopedie[type].sound.play();
     					}
 						let elem = document.querySelector('#'+type);
 						elem.classList.remove("pas-nourri");
@@ -299,7 +321,7 @@
 				computed: {
 					listeTypesFamiliersDisponibles() {
 						let typesManages = this.listeFamiliers.map((familier) => {return familier.type}); // Je récupère tous les types de familiers gérés actuelement (avec .map)
-						return Object.entries(this.typeFamilier) // Je récupère la liste des couples clef/valeur de l'encyclopédie
+						return Object.entries(this.encyclopedie) // Je récupère la liste des couples clef/valeur de l'encyclopédie
 							.map((entry) => {return {text: entry[1].nom, value: entry[0]}}) // Je transforme chaque entrée en un objet qui contient le nom du familier et le type de familier
 							.filter((type) => {return typesManages.indexOf(type.value) == -1}); // Filtre pour retirer les familiers déjà en cours de gestion
 					},
@@ -307,8 +329,8 @@
 						switch(this.choixTri) {
 							case "nom":
 								return this.listeFamiliers.sort((famType1, famType2) => {
-									let type1 = this.typeFamilier[famType1.type];
-									let type2 = this.typeFamilier[famType2.type];
+									let type1 = this.encyclopedie[famType1.type];
+									let type2 = this.encyclopedie[famType2.type];
 
 									if(type1.nom < type2.nom) return -1;
 									if(type1.nom > type2.nom) return 1;
@@ -318,8 +340,8 @@
 
 							case "prochainRepas":
 								return this.listeFamiliers.sort((famType1, famType2) => {
-									let type1 = this.typeFamilier[famType1.type];
-									let type2 = this.typeFamilier[famType2.type];
+									let type1 = this.encyclopedie[famType1.type];
+									let type2 = this.encyclopedie[famType2.type];
 
 									let prochainRepas1 = moment(famType1.heureDernierRepas, "HH:mm // D MMMM").add(type1.heureNourrissage.debut, 'hours');
 									let prochainRepas2 = moment(famType2.heureDernierRepas, "HH:mm // D MMMM").add(type2.heureNourrissage.debut, 'hours');
