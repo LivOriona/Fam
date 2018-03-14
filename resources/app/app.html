@@ -49,7 +49,7 @@
 									<span>Détendez-vous, vous gérez déjà toute l'animalerie !</span>
 								</v-tooltip>
 							</v-flex>
-							<v-flex class="xs12 sm3">
+							<v-flex class="xs12 sm2">
 								<v-btn dark color="orange darken-3" :disabled="selectedtype==''" @click="ajouterencyclopedie()">Ajouter</v-btn> 
 							</v-flex>
 							<v-flex class="xs12 sm3">
@@ -75,7 +75,34 @@
 	      						@change="sauvegardeInfos()"> <!-- Bouton Switch son -->
 	      						</v-switch>
 							</v-flex>
+							<v-flex class="xs12 sm1">
+								<v-btn dark color="orange darken-3" @click="afficherAide=true">Aide</v-btn>
+							</v-flex>
 						</v-layout>
+						<v-dialog v-model="afficherAide" max-width="700px"> <!-- Contenu de l'aide -->
+							<v-card>
+								<v-card-title>
+									<span>Aide</span>
+								</v-card-title>
+								<v-layout class="mx-5">
+							    	<v-flex xs12>
+							    		<ul> 
+							    		<li>Ajoutez les types de familiers que vous gérez ;</li>
+							    		<li>Cliquez sur chaque types de familiers chaque fois que vous les nourrissez ;</li>
+							    		<li>Lorsque vous avez nourrit un familier, son icône reste verte pendant 5 minutes ;</li>
+							    		<li>Vous verrez alors au-dessus de l'icône de votre type de familier, l'heure et la date à laquelle vous pourrez prochainement le nourrir, et en-dessous, l'heure à laquelle vous devez les nourrir au plus tard (avant qu'ils ne se nourrissent seuls) ;</li>
+							    		<li>Passez votre souris sur chaque familier et vous obtiendrez différents détails à propos de ce dernier ;</li>
+							    		<li>Vous pouvez également les supprimer lorsque vous ne gérez plus ce type de familier à l'aide de la poubelle.</li>
+							    		</ul>
+									</v-flex>
+							    </v-layout>
+								<v-card-actions>
+									<v-layout column align-center>
+										<v-btn dark color="orange darken-3" @click.stop="afficherAide=false">Compris</v-btn>
+									</v-layout>
+								</v-card-actions>
+							</v-card>
+						</v-dialog>
 						<v-layout class="row wrap"> <!-- Affichace des familiers avec leurs icônes -->
 							<v-flex 
 							
@@ -118,7 +145,7 @@
 											<span>  <span class="strong">Nom</span> : {{encyclopedie[familier.type].nom}}<br>
 													<span class="strong">Bonus</span> : {{encyclopedie[familier.type].bonus}}<br>
 													<span class="strong">Bonus Max</span> : {{encyclopedie[familier.type].bonusMax}}<br>
-													<span class="strong">Nourriture</span> : {{afficherTypeNourrriture(familier.type)}}<br>	
+													<span class="strong">Nourriture</span> : <span v-html="afficherTypeNourrriture(familier.type)"></span><br> 
 													<span class="strong">Zone et Bonus de prédilection</span> : {{encyclopedie[familier.type].pourcentageBonus}} {{afficherZoneBonus(familier.type)}}<br>
 													<span class="strong">Monstre pour droper l'hormone</span> : {{encyclopedie[familier.type].dropHormone}}
 											</span>
@@ -167,7 +194,20 @@
 							nom: "Chacha", 
 							icone: "img\\chacha.png",
 							heureNourrissage: {debut: 5, fin: 18},
-							sound: new Audio("sound\\leopard.wav")
+							sound: new Audio("sound\\leopard.wav"),
+							bonus: "0 à 80 Chance/Intelligence/Force/Agilité/Vitalité ou 0 à 20% Résistance Neutre",
+							bonusMax: "90 Chance/Intelligence/Force/Agilité/Vitalité ou 22% Résistance Neutre",
+							nourriture: {
+								"Agilité": ["Plumes de Tofu", "Oeuf de Tofu", "Aile du Tofu Maléfique"],
+								"Intelligence": ["Plume du Kwak de Glace/Vent/Flamme/Terre", "Greuvette", "Greuvette Vidée", "Goujon", "Goujon vidé"],
+								"Chance": ["Souris verte", "Truite", "Truite vidée"],
+								"Force": ["Oreilles du Tiwabbit", "Oreille du Grand Pa Wabbit"],
+								"Vitalité": ["Sang de Dragon Cochon", "Sang du Vampire"],
+								"Résistance Neutre": ["Gelée à la Fraise/Menthe", "Gelée Bleutée"]
+							},
+							zoneBonus: ["Tainéla"], 
+							pourcentageBonus: "100%",
+							dropHormone:"Bouftou Royal"
 						},
 						"bworky" :
 						{
@@ -222,13 +262,18 @@
 							nom: "Petit Chacha Blanc", 
 							icone: "img\\petit_chacha_blanc.png",
 							heureNourrissage: {debut: 5, fin: 36},
-							sound: new Audio("sound\\tigre.wav")
+							sound: new Audio("sound\\tigre.wav"),
+							nourriture: {
+								"Pour bonus agilité": ["Riz", "Racine de Bulbambou", "Racine de Bulbig"], 
+								"Pour bonus sagesse": ["Fleur de Bulbiflore", "Feuille de Bulbuisson"]
+							}
 						}
 					},
 					selectedtype: "",
 					choixAudio: true,
 					choixTri: "prochainRepas",
-					remote: null
+					remote: null,
+					afficherAide: false
 				}), 
 
 				methods: 
@@ -246,6 +291,28 @@
 					retirerencyclopedie(type){
 						this.listeFamiliers = this.listeFamiliers.filter((fam) => {return fam.type != type}); // 
 						this.sauvegardeInfos(); // Je sauvegarde ce que j'ai fait au-dessus
+					},
+
+					formatterListeElements(liste) {
+						let resultat = [];
+						let ligneActuelle = "";
+						for(element of liste) {
+							ligneActuelle += element + ", ";
+							console.log(resultat);
+							console.log(ligneActuelle);
+							
+							if(ligneActuelle.length > 40) {
+								resultat.push(ligneActuelle);
+								ligneActuelle = "";
+							}
+						}
+						if(ligneActuelle != "") {
+							resultat.push(ligneActuelle);
+						}
+						
+						resultat[resultat.length -1] = resultat[resultat.length -1].substring(0, resultat[resultat.length -1].length - 2);
+						
+						return resultat.join('<br>');
 					},
 
 					afficherNomFamilier(type){
@@ -267,8 +334,19 @@
 							.format("HH:mm // D MMMM");
 					},
 
-					afficherTypeNourrriture(type){
-						return this.encyclopedie[type].nourriture && this.encyclopedie[type].nourriture.join(", ");
+					afficherTypeNourrriture(type) {
+						if(!this.encyclopedie[type].nourriture) return "";
+						
+						let nourritures = this.encyclopedie[type].nourriture;
+						if(nourritures instanceof Array) {
+							return this.formatterListeElements(nourritures);
+						} else {
+							resultat = "<br>";
+							for(entries of Object.entries(nourritures)) {
+								resultat += "&nbsp;&nbsp;&nbsp;<span style='text-decoration: underline'>"+entries[0]+"</span>: "+this.formatterListeElements(entries[1])+"<br>";
+							}
+							return resultat;
+						}
 					},
 
 					afficherZoneBonus(type){
