@@ -1,0 +1,387 @@
+Nom : 
+Bonus : 0 à 
+Bonus maximum sous hormone : 
+Drop de l'hormone : 
+Nourriture : = 
+Zone et bonus de prédilection : %
+Heures de nourrissage : h - h
+
+
+Dauge
+0 à 400 Vitalité 
+440 vita
+El Piko
+Os = +1 vita
+Zone et bonus de prédilection : Saharach 40%
+3h - 36h
+
+Nom : Péki
+Bonus : 0 à 400 Vitalité 
+Bonus maximum sous hormone : 440 Vitalité
+Drop de l'hormone : Péki Péki
+Nourriture : +1 vita = Riz, Graine de Pandouille, Racine de Bulbiflore, Racine de Bulbuisson, Racine de Bulbambou, Racine de Bulbig, Fleur de Bulbiflore, Feuille de Bulbuisson, Pousses de Bulbambou, Feuille de Bambouto, Feuille de Bambouto Sacré, Racine Magique de Bambouto, Racine Magique de Bambouto Sacré
+Zone et bonus de prédilection : Pandala 40%
+Heures de nourrissage : 3h - 36h
+
+Nom : Médugivre
+Bonus : 0 à 10 Soin
+Bonus maximum sous hormone : 11 Soin
+Drop de l'hormone : Mansot royal
+Nourriture : +1 Soin = Perce-neige
+Zone et bonus de prédilection : Ile de frigost 20%
+Heures de nourrissage : 5h - 72h
+
+Nom : Fotome
+Bonus : 0 à 150 vita
+Bonus maximum sous hormone : 165 vita
+Drop de l'hormone : Boostache
+Nourriture : = Os
+Zone et bonus de prédilection : Brâkmar, Foire du Trool, Pandala Neutre 200%
+Heures de nourrissage : 5h - 72h
+
+Nom : vilain petit corbac
+Bonus : 0 à 40 de Prospection
+Bonus maximum sous hormone : 45 Prospection
+Drop de l'hormone : Maître Corbac
+Nourriture : Os
+Zone et bonus de prédilection : 80% Plaines de Cania, Brâkmar, Landes de Sidimote
+Heures de nourrissage : 5h - 72h
+
+Nom : bworky
+Bonus : 0 à 1 000 Pods
+Bonus maximum sous hormone : 1 100 Pods
+Drop de l'hormone : Bworkette
+Nourriture : = "Noix de Cajou", "Noix de Pécan", "Gland", "Noisette"
+Zone et bonus de prédilection : "20%" "Amakna", "Tainéla", "Baie de Sufokia", "Forêt des Abraknydes", "Bonta", "Plaines de Cania", "Brâkmar", "Landes de Sidimote", "Territoire des Dopeuls", "Village des Brigandins", "Foire du Trool", "Astrub", "Labyrinthe du Dragon Cochon", "Montagne des Koalaks", "Donjon des Tofus", "Caverne du Koulosse", "Sanctuaire des Familiers", "Pitons Rocheux des Craqueleurs", "Donjon des Bworks", "Donjon des Scarafeuilles", "Donjon des Champs", "Donjon du Dragon Cochon", "Donjon des Dragoeufs", "Zone privée"  
+Heures de nourrissage : 5h - 72h
+
+
+Nom : wabbit
+Bonus : 0 à 27,17 Sagesse ou 0 à 80 Chance/Intelligence/Force/Agilité
+Bonus maximum sous hormone : 30 Sagesse ou 90 Chance/Intelligence/Force/Agilité
+Drop de l'hormone : Wa Wabbit
+Nourriture : Sagesse = "Cawotte" ; Chance = "Intestin d'Araknosé", "Langue d'Épouvanteur", "Menthe Sauvage" ; Intelligence = "Trèfle à 5 feuilles", "Bave de Rose Démoniaque" ; Force = "Fruit de Palme", "Sève d'Abraknyde Retravaillée" ; Agilité = "Fleur de Blop Coco/Reinette/Griotte/Indigo"
+Zone et bonus de prédilection : "60%" "Île des Wabbits"
+Heures de nourrissage : 24h - 72h
+
+
+Nom : Petit Chacha Blanc
+Bonus : 0 à 1 000 Initiative
+Bonus maximum sous hormone : 1 100 Initiative
+Drop de l'hormone : Maître Pandore
+Nourriture : = Viande
+Zone et bonus de prédilection : 40% "Pandala Neutre/Eau/Terre/Feu/Air", "Pandala Donjon" 
+Heures de nourrissage : 5h - 36h
+
+
+Nom : Petit Chienchien Noir
+Bonus : 0 à 50 Puissance
+Bonus maximum sous hormone : 55 Puissance
+Drop de l'hormone : Meulou
+Nourriture : Poisson
+Zone et bonus de prédilection : "100%" "Amakna", "Baie de Sufokia", "Plaines de Cania", "Astrub" 
+Heures de nourrissage : 11h - 36h
+
+
+Nom : Nomoon
+Bonus : 0 à 80 Prospection
+Bonus maximum sous hormone : 90 Prospection
+Drop de l'hormone : Moon
+Nourriture : "Fleur de Gloutovore", "Feuille de Fourbasse", "Plume de Domoizelle", "Tranche de Nodkoko"
+Zone et bonus de prédilection : "40%" "Île de Moon"
+Heures de nourrissage : 24h - 72h
+
+
+Nom : Koalak Sanguin
+Bonus : 0 à 50 Sagesse
+Bonus maximum sous hormone : 55 Sagesse
+Drop de l'hormone : Skeunk
+Nourriture : "Bandelette du Guerrier Koalak", "Fémur de Koalak Farouche", "Boomerang du Koalak Sanguin", "Boomerang du Dok Alako", "Boomerang du Maître Koalak", "Boomerang du Warko Marron", "Étoffe du Fauchalak"
+Zone et bonus de prédilection : "40%" "Montagne des Koalaks", "Caverne du Koulosse"
+Heures de nourrissage : 5h - 72h
+
+
+Nom : Chacha
+Bonus : 0 à 80 Chance/Intelligence/Force/Agilité/Vitalité ou 0 à 20% Résistance Neutre
+Bonus maximum sous hormone : 90 Chance/Intelligence/Force/Agilité/Vitalité ou 22% Résistance Neutre
+Drop de l'hormone : Bouftou Royal
+Nourriture : Agilité = 'Plumes de Tofu", "Oeuf de Tofu", "Aile du Tofu Maléfique"; Intelligence = "Plume du Kwak de Glace/Vent/Flamme/Terre", "Greuvette", "Greuvette Vidée", "Goujon, Goujon vidé"; Chance = "Souris verte", "Truite", "Truite vidée" ; Force = "Oreilles du Tiwabbit", "Oreille du Grand Pa Wabbit"; Résistance neutre = "Gelée à la Fraise/Menthe", "Gelée Bleutée", Vitalité = "Sang de Dragon Cochon", "Sang du Vampire"
+Zone et bonus de prédilection : "100%" "Tainéla"
+Heures de nourrissage : 5h - 18h
+
+
+Nom : ""
+Bonus : "0 à "
+Bonus maximum sous hormone : ""
+Drop de l'hormone : ""
+Nourriture : = 
+Zone et bonus de prédilection : "%" ""
+Heures de nourrissage : h - h
+
+
+
+Nom : ""
+Bonus : "0 à "
+Bonus maximum sous hormone : ""
+Drop de l'hormone : ""
+Nourriture : = 
+Zone et bonus de prédilection : "%" ""
+Heures de nourrissage : h - h
+
+
+Nom : ""
+Bonus : "0 à "
+Bonus maximum sous hormone : ""
+Drop de l'hormone : ""
+Nourriture : = 
+Zone et bonus de prédilection : "%" ""
+Heures de nourrissage : h - h
+
+
+Nom : ""
+Bonus : "0 à "
+Bonus maximum sous hormone : ""
+Drop de l'hormone : ""
+Nourriture : = 
+Zone et bonus de prédilection : "%" ""
+Heures de nourrissage : h - h
+
+
+Nom : ""
+Bonus : "0 à "
+Bonus maximum sous hormone : ""
+Drop de l'hormone : ""
+Nourriture : = 
+Zone et bonus de prédilection : "%" ""
+Heures de nourrissage : h - h
+
+
+Nom : ""
+Bonus : "0 à "
+Bonus maximum sous hormone : ""
+Drop de l'hormone : ""
+Nourriture : = 
+Zone et bonus de prédilection : "%" ""
+Heures de nourrissage : h - h
+
+
+Nom : ""
+Bonus : "0 à "
+Bonus maximum sous hormone : ""
+Drop de l'hormone : ""
+Nourriture : = 
+Zone et bonus de prédilection : "%" ""
+Heures de nourrissage : h - h
+
+
+Nom : ""
+Bonus : "0 à "
+Bonus maximum sous hormone : ""
+Drop de l'hormone : ""
+Nourriture : = 
+Zone et bonus de prédilection : "%" ""
+Heures de nourrissage : h - h
+
+
+Nom : ""
+Bonus : "0 à "
+Bonus maximum sous hormone : ""
+Drop de l'hormone : ""
+Nourriture : = 
+Zone et bonus de prédilection : "%" ""
+Heures de nourrissage : h - h
+
+
+Nom : ""
+Bonus : "0 à "
+Bonus maximum sous hormone : ""
+Drop de l'hormone : ""
+Nourriture : = 
+Zone et bonus de prédilection : "%" ""
+Heures de nourrissage : h - h
+
+
+Nom : ""
+Bonus : "0 à "
+Bonus maximum sous hormone : ""
+Drop de l'hormone : ""
+Nourriture : = 
+Zone et bonus de prédilection : "%" ""
+Heures de nourrissage : h - h
+
+
+
+Nom : ""
+Bonus : "0 à "
+Bonus maximum sous hormone : ""
+Drop de l'hormone : ""
+Nourriture : = 
+Zone et bonus de prédilection : "%" ""
+Heures de nourrissage : h - h
+
+Nom : ""
+Bonus : "0 à "
+Bonus maximum sous hormone : ""
+Drop de l'hormone : ""
+Nourriture : = 
+Zone et bonus de prédilection : "%" ""
+Heures de nourrissage : h - h
+
+
+Nom : ""
+Bonus : "0 à "
+Bonus maximum sous hormone : ""
+Drop de l'hormone : ""
+Nourriture : = 
+Zone et bonus de prédilection : "%" ""
+Heures de nourrissage : h - h
+Nom : ""
+Bonus : "0 à "
+Bonus maximum sous hormone : ""
+Drop de l'hormone : ""
+Nourriture : = 
+Zone et bonus de prédilection : "%" ""
+Heures de nourrissage : h - h
+
+
+Nom : ""
+Bonus : "0 à "
+Bonus maximum sous hormone : ""
+Drop de l'hormone : ""
+Nourriture : = 
+Zone et bonus de prédilection : "%" ""
+Heures de nourrissage : h - h
+
+
+Nom : ""
+Bonus : "0 à "
+Bonus maximum sous hormone : ""
+Drop de l'hormone : ""
+Nourriture : = 
+Zone et bonus de prédilection : "%" ""
+Heures de nourrissage : h - h
+
+
+Nom : ""
+Bonus : "0 à "
+Bonus maximum sous hormone : ""
+Drop de l'hormone : ""
+Nourriture : = 
+Zone et bonus de prédilection : "%" ""
+Heures de nourrissage : h - h
+
+
+Nom : ""
+Bonus : "0 à "
+Bonus maximum sous hormone : ""
+Drop de l'hormone : ""
+Nourriture : = 
+Zone et bonus de prédilection : "%" ""
+Heures de nourrissage : h - h
+
+Nom : ""
+Bonus : "0 à "
+Bonus maximum sous hormone : ""
+Drop de l'hormone : ""
+Nourriture : = 
+Zone et bonus de prédilection : "%" ""
+Heures de nourrissage : h - h
+
+
+Nom : ""
+Bonus : "0 à "
+Bonus maximum sous hormone : ""
+Drop de l'hormone : ""
+Nourriture : = 
+Zone et bonus de prédilection : "%" ""
+Heures de nourrissage : h - h
+
+
+Nom : ""
+Bonus : "0 à "
+Bonus maximum sous hormone : ""
+Drop de l'hormone : ""
+Nourriture : = 
+Zone et bonus de prédilection : "%" ""
+Heures de nourrissage : h - h
+
+
+Nom : ""
+Bonus : "0 à "
+Bonus maximum sous hormone : ""
+Drop de l'hormone : ""
+Nourriture : = 
+Zone et bonus de prédilection : "%" ""
+Heures de nourrissage : h - h
+
+Nom : ""
+Bonus : "0 à "
+Bonus maximum sous hormone : ""
+Drop de l'hormone : ""
+Nourriture : = 
+Zone et bonus de prédilection : "%" ""
+Heures de nourrissage : h - h
+
+
+Nom : "
+Bonus : "0 à "
+Bonus maximum sous hormone : ""
+Drop de l'hormone : ""
+Nourriture : = 
+Zone et bonus de prédilection : "%" ""
+Heures de nourrissage : h - h
+
+
+Nom : "
+Bonus : "0 à "
+Bonus maximum sous hormone : ""
+Drop de l'hormone : ""
+Nourriture : = 
+Zone et bonus de prédilection : "%" ""
+Heures de nourrissage : h - h
+
+
+Nom : ""
+Bonus : "0 à "
+Bonus maximum sous hormone : ""
+Drop de l'hormone : ""
+Nourriture : = 
+Zone et bonus de prédilection : "%" ""
+Heures de nourrissage : h - h
+
+
+Nom : ""
+Bonus : "0 à "
+Bonus maximum sous hormone : ""
+Drop de l'hormone : ""
+Nourriture : = 
+Zone et bonus de prédilection : "%" ""
+Heures de nourrissage : h - h
+
+
+Nom : ""
+Bonus : "0 à "
+Bonus maximum sous hormone : ""
+Drop de l'hormone : ""
+Nourriture : = 
+Zone et bonus de prédilection : "%" ""
+Heures de nourrissage : h - h
+
+
+Nom : ""
+Bonus : "0 à "
+Bonus maximum sous hormone : ""
+Drop de l'hormone : ""
+Nourriture : = 
+Zone et bonus de prédilection : "%" ""
+Heures de nourrissage : h - h
+
+
+Nom : ""
+Bonus : "0 à "
+Bonus maximum sous hormone : ""
+Drop de l'hormone : ""
+Nourriture : = 
+Zone et bonus de prédilection : "%" ""
+Heures de nourrissage : h - h
+
