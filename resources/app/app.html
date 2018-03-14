@@ -118,6 +118,7 @@
 											<span>  <span class="strong">Bonus</span> : {{encyclopedie[familier.type].bonus}}<br>
 													<span class="strong">Bonus Max</span> : {{encyclopedie[familier.type].bonusMax}}<br>
 													<span class="strong">Nourriture</span> : {{afficherTypeNourrriture(familier.type)}}<br>	
+													<span class="strong">Zone et Bonus de prédilection</span> : {{encyclopedie[familier.type].pourcentageBonus}} {{afficherZoneBonus(familier.type)}}<br>
 											</span>
 										</v-tooltip>
 									</v-layout>	
@@ -196,7 +197,8 @@
 							bonus: "0 à 400 Vitalité",
 							bonusMax: "440 Vitalité",
 							nourriture: ["Riz", "Graine de Pandouille", "Racine de Bulbiflore", "Racine de Bulbuisson", "Racine de Bulbambou, Racine de Bulbig", "Fleur de Bulbiflore", "Feuille de Bulbuisson", "Pousses de Bulbambou", "Feuille de Bambouto", "Feuille de Bambouto Sacré", "Racine Magique de Bambouto", "Racine Magique de Bambouto Sacré"],
-							zoneBonus: "Pandala 40%",
+							zoneBonus: ["Pandala"], 
+							pourcentageBonus: 40%,
 							dropHormone: "Péki Péki"
 						},
 						"nomoon" :
@@ -265,6 +267,10 @@
 
 					afficherTypeNourrriture(type){
 						return this.encyclopedie[type].nourriture && this.encyclopedie[type].nourriture.join(", ");
+					},
+
+					afficherZoneBonus(type){
+						return this.encyclopedie[type].zoneBonus && this.encyclopedie[type].zoneBonus.join(", ");
 					},
 
 					nourrirTypeFamilier(type) {
