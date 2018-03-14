@@ -144,7 +144,7 @@
 											<img :src="iconeFamilier(familier.type)" style="width:100%" slot="activator" />	<!-- icone du familier -->
 											<span>  <span class="strong">Nom</span> : {{encyclopedie[familier.type].nom}}<br>
 													<span class="strong">Bonus</span> : {{encyclopedie[familier.type].bonus}}<br>
-													<span class="strong">Bonus Max</span> : {{encyclopedie[familier.type].bonusMax}}<br>
+													<span class="strong">Bonus Maximum (sous hormone)</span> : {{encyclopedie[familier.type].bonusMax}}<br>
 													<span class="strong">Nourriture</span> : <span v-html="afficherTypeNourrriture(familier.type)"></span><br> 
 													<span class="strong">Zone et Bonus de prédilection</span> : {{encyclopedie[familier.type].pourcentageBonus}} {{afficherZoneBonus(familier.type)}}<br>
 													<span class="strong">Monstre pour droper l'hormone</span> : {{encyclopedie[familier.type].dropHormone}}
@@ -182,12 +182,24 @@
 					listeFamiliers: [],
 					encyclopedie: 
 					{
-						"wabbit" : 
+						"wabbit" :
 						{
 							nom: "Wabbit", 
 							icone: "img\\wabbit.png",
 							heureNourrissage: {debut: 23, fin: 48},
-							sound: new Audio("sound\\loutre.wav")
+							sound: new Audio("sound\\loutre.wav"),
+							bonus: "0 à 27,17 Sagesse ou 0 à 80 Chance/Intelligence/Force/Agilité",
+							bonusMax: "30 Sagesse ou 90 Chance/Intelligence/Force/Agilité",
+							nourriture: {
+								"Sagesse": ["Cawotte" ], 
+								"Chance": ["Intestin d'Araknosé", "Langue d'Épouvanteur", "Menthe Sauvage"],
+								"Intelligence":["Trèfle à 5 feuilles", "Bave de Rose Démoniaque"],
+								"Force":["Fruit de Palme", "Sève d'Abraknyde Retravaillée"],
+								"Agilité":["Fleur de Blop Coco/Reinette/Griotte/Indigo"]
+							},
+							zoneBonus: ["Île des Wabbits"], 
+							pourcentageBonus: "60%",
+							dropHormone: "Wa Wabbit"
 						},
 						"chacha" :
 						{
@@ -213,22 +225,40 @@
 						{
 							nom: "Bworky", 
 							icone: "img\\bworky.png",
-							heureNourrissage: {debut: 5, fin: 72},
-							sound: new Audio("sound\\sheep.wav")
+							heureNourrissage: {debut:  5, fin: 72},
+							sound: new Audio("sound\\sheep.wav"),
+							bonus: "0 à 1 000 Pods",
+							bonusMax: "1 100 Pods",
+							nourriture: ["Noix de Cajou", "Noix de Pécan", "Gland", "Noisette"],
+							zoneBonus: ["Amakna", "Tainéla", "Baie de Sufokia", "Forêt des Abraknydes", "Bonta", "Plaines de Cania", "Brâkmar", "Landes de Sidimote", "Territoire des Dopeuls", "Village des Brigandins", "Foire du Trool", "Astrub", "Labyrinthe du Dragon Cochon", "Montagne des Koalaks", "Donjon des Tofus", "Caverne du Koulosse", "Sanctuaire des Familiers", "Pitons Rocheux des Craqueleurs", "Donjon des Bworks", "Donjon des Scarafeuilles", "Donjon des Champs", "Donjon du Dragon Cochon", "Donjon des Dragoeufs", "Zone privée"], 
+							pourcentageBonus: "20%",
+							dropHormone: "Bworkette"
 						},
 						"corbac" :
 						{
 							nom: "Vilain Petit Corbac", 
 							icone: "img\\corbac.png",
 							heureNourrissage: {debut: 5, fin: 72},
-							sound: new Audio("sound\\canard.wav")
+							sound: new Audio("sound\\canard.wav"),
+							bonus: "0 à 40 de Prospection",
+							bonusMax: "45 Prospection",
+							nourriture: ["Os"],
+							zoneBonus: ["Plaines de Cania", "Brâkmar", "Landes de Sidimote"], 
+							pourcentageBonus: "80%",
+							dropHormone: "Maître Corbac"
 						},
 						"koalak_sanguin" :
 						{
 							nom: "Koalak Sanguin", 
 							icone: "img\\koalak_sanguin.png",
-							heureNourrissage: {debut: 5, fin: 72},
-							sound: new Audio("sound\\marmotte.wav")
+							heureNourrissage: {debut:  5, fin: 72},
+							sound: new Audio("sound\\marmotte.wav"),
+							bonus: "0 à 50 Sagesse",
+							bonusMax: "55 Sagesse",
+							nourriture: ["Bandelette du Guerrier Koalak", "Fémur de Koalak Farouche",  "Boomerang du Koalak Sanguin",  "Boomerang du Dok Alako", "Boomerang du Maître Koalak",  "Boomerang du Warko Marron", "Étoffe du Fauchalak"],
+							zoneBonus: ["Montagne des Koalaks", "Caverne du Koulosse"], 
+							pourcentageBonus: "40%",
+							dropHormone: "Skeunk"
 						},
 						"peki" :
 						{
@@ -248,14 +278,26 @@
 							nom: "Nomoon", 
 							icone: "img\\nomoon.png",
 							heureNourrissage: {debut: 24, fin: 72},
-							sound: new Audio("sound\\fennec.wav")
+							sound: new Audio("sound\\fennec.wav"),
+							bonus: "0 à 80 Prospection",
+							bonusMax: "90 Prospection",
+							nourriture: ["Fleur de Gloutovore", "Feuille de Fourbasse", "Plume de Domoizelle", "Tranche de Nodkoko"],
+							zoneBonus: ["Île de Moon"], 
+							pourcentageBonus: "40%",
+							dropHormone: "Moon"
 						},
 						"petit_chienchien_noir" :
 						{
 							nom: "Petit Chienchien Noir", 
 							icone: "img\\petit_chienchien_noir.png",
 							heureNourrissage: {debut: 11, fin: 36},
-							sound: new Audio("sound\\loup.wav")
+							sound: new Audio("sound\\loup.wav"),
+							bonus: "0 à 50 Puissance",
+							bonusMax: "55 Puissance",
+							nourriture: ["Poisson"],
+							zoneBonus: ["Amakna", "Baie de Sufokia", "Plaines de Cania", "Astrub" ], 
+							pourcentageBonus: "100%",
+							dropHormone: "Meulou"
 						},
 						"petit_chacha_blanc" :
 						{
@@ -263,12 +305,35 @@
 							icone: "img\\petit_chacha_blanc.png",
 							heureNourrissage: {debut: 5, fin: 36},
 							sound: new Audio("sound\\tigre.wav"),
-							nourriture: {
-								"Pour bonus agilité": ["Riz", "Racine de Bulbambou", "Racine de Bulbig"], 
-								"Pour bonus sagesse": ["Fleur de Bulbiflore", "Feuille de Bulbuisson"]
-							}
+							bonus: "0 à 1 000 Initiative",
+							bonusMax: "1 100 Initiative",
+							nourriture: ["Viande"],
+							zoneBonus: ["Pandala Neutre/Eau/Terre/Feu/Air", "Pandala Donjon" ], 
+							pourcentageBonus: "40%",
+							dropHormone: "Maître Pandore"
 						}
 					},
+
+					/* 
+					"" :
+						{
+							nom: "", 
+							icone: "img\\.png",
+							heureNourrissage: {debut: 5, fin: 72},
+							sound: new Audio("sound\\.wav"),
+							bonus: "",
+							bonusMax: "",
+							nourriture: [],
+							nourriture: {
+								"": [], 
+								"": []
+							},
+							zoneBonus: [""], 
+							pourcentageBonus: "%",
+							dropHormone: ""
+						},
+						 */
+
 					selectedtype: "",
 					choixAudio: true,
 					choixTri: "prochainRepas",
@@ -298,9 +363,6 @@
 						let ligneActuelle = "";
 						for(element of liste) {
 							ligneActuelle += element + ", ";
-							console.log(resultat);
-							console.log(ligneActuelle);
-							
 							if(ligneActuelle.length > 40) {
 								resultat.push(ligneActuelle);
 								ligneActuelle = "";
